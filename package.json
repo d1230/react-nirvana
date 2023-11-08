@@ -16,10 +16,12 @@
     "i18next-browser-languagedetector": "^7.1.0",
     "install": "^0.13.0",
     "moment": "^2.29.4",
+    "moment-timezone": "^0.5.43",
     "npm": "^10.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-i18next": "^13.3.1"
+    "react-i18next": "^13.3.1",
+    "react-router-dom": "^6.18.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

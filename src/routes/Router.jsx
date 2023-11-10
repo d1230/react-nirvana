@@ -1,27 +1,33 @@
-import * as React from "react";
+
 import { useRoutes } from "react-router-dom";
-import App from "../App";
-
-
 import {Layout} from "../components";
-import About from "../views/About/Index";
+import Home from "../views/Home";
+import React from "react";
+
 
 
 function Router() {
 
 
    
+    const Services = React.lazy(() => import("../views/Services"));
+    const Clients = React.lazy(() => import("../views/Clients"));
+    const JobSeekers = React.lazy(() => import("../views/JobSeekers/JobSeekers"));
+    const Contact = React.lazy(() => import("../views/Contact"));
+    const About = React.lazy(() => import("../views/About"));
 
     let element = useRoutes([
         {
             path: '/',
             element: <Layout />,
             children: [
-                { path: "", element: <App /> },
-                { path: "/about", element: <About /> },
-                { path: "", element: <App /> },
-                { path: "", element: <App /> },
                
+                { path: "about", element: <About /> },
+                
+                { path: "clients", element: <Clients /> },
+                { path: "jobseekers", element: <JobSeekers /> },
+                { path: "services", element: <Services /> },
+                { path: "contact", element: <Contact /> },
             ]
 
         }

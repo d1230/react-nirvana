@@ -1,8 +1,8 @@
-import React from 'react'
+
 
 const JobSeekers = () => {
   return (
-    <div>JobSeekers</div>
+    <div>JobSeekerswwwwww</div>
   )
 }
 

@@ -5,9 +5,9 @@ const Footer = () => {
 
   return (
     <FooterAppbar position="static" color="primary" >
-      <Toolbar>
-        <Typography variant="body1" color="inherit" sx={{float:'right'}}>
-          &copy; 2023 Your Company Name
+      <Toolbar sx={{backgroundColor:'#00263b'}}>
+        <Typography variant="body1" color="#00bced" sx={{float:'right'}}>
+           Innovative Solutions. Better Careers.
         </Typography>
       </Toolbar>
     </FooterAppbar>

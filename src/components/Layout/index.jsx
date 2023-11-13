@@ -16,7 +16,10 @@ const Layout = () => {
       <Header />
        
         <Suspense fallback={<>Loading</>}>
-          <Outlet  />
+          <Box sx={{margin:'0px'}}>
+            <Outlet  />
+          </Box>
+          
         </Suspense>
         
       

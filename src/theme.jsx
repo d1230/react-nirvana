@@ -77,7 +77,7 @@ const theme = createTheme({
           fontWeight: '400',
           '&.Mui-error': {
             fontSize: '12px',
-            marginLeft: 0,
+            
           },
         },
       },

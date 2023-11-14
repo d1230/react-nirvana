@@ -115,14 +115,14 @@ const Header = () => {
                 open={Boolean(anchorEl && anchorEl.id === `basic-button-${index}`)}
                 onClose={handleClose}
                 MenuListProps={{ onMouseLeave: handleClose }}
-                sx={{
-                  '& .MuiPaper-root': {
-                    backgroundColor: 'your-dropdown-color',
-                  },
-                }}
+                // sx={{
+                //   '& .MuiPaper-root': {
+                //     backgroundColor: 'your-dropdown-color',
+                //   },
+                // }}
               >
                 {label.items.map((subItem, subIndex) => (
-                  <MenuItem key={subIndex}>
+                  <MenuItem key={subIndex} sx={{backgroundColor:'blue'}}>
                     <Link to={subItem.to} onClick={handleClose}>
                       {subItem.label}{" "}
                     </Link>

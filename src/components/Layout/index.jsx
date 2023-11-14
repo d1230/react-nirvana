@@ -9,20 +9,15 @@ const Layout = () => {
   return (
     <>
       <UpperHeader />
-      
-        
-      
 
       <Header />
-       
-        <Suspense fallback={<>Loading</>}>
-          <Box sx={{margin:'0px'}}>
-            <Outlet  />
-          </Box>
-          
-        </Suspense>
-        
-      
+
+      <Suspense fallback={<>Loading</>}>
+        <Box sx={{ margin: "0px" }}>
+          <Outlet />
+        </Box>
+      </Suspense>
+
       <Footer />
     </>
   );

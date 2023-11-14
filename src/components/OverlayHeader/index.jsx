@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
+
 
 const OverlayHeader = (props) => {
   const { overlayImage, mainText, subText } = props;

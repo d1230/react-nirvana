@@ -1,4 +1,5 @@
 import {
+  AppBar,
   Box,
   Button,
   Grid,
@@ -6,6 +7,9 @@ import {
   Menu,
   MenuItem,
   Select,
+  Toolbar,
+  Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { StyledAppbar, StyledNavLink } from "./Header.style";
 import { Link } from "react-router-dom";
@@ -48,6 +52,8 @@ const LinkItems = [
 ];
 
 const Header = () => {
+  //check if its small screen
+  const isSmallScreen = useMediaQuery('(max-width:850px)');
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -63,7 +69,27 @@ const Header = () => {
   };
 
   return (
-    <StyledAppbar className="header" container>
+    <>
+   
+    {isSmallScreen? 
+      <AppBar>
+        <Toolbar>
+          
+        <Box>
+          <img
+            alt="Nirvana Enterprises"
+            src="https://www.nirvanaenterprises.com/wp-content/uploads/nirvana-enterprises-logo-white.png"
+            title="Nirvana Enterprises"
+            width="120"
+            height="30"
+            
+          ></img>
+        </Box>
+          
+        </Toolbar>
+      </AppBar>
+      :
+      <StyledAppbar className="header" container>
       {LinkItems.map((label, index) => (
         <Grid sx={{ color: "white", m: 1 }} item key={index}>
           {label.type === "link" ? (
@@ -108,6 +134,9 @@ const Header = () => {
         </Grid>
       ))}
     </StyledAppbar>
+    } 
+    </>
+    
   );
 };
 

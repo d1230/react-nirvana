@@ -1,9 +1,11 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 
 
 const OverlayHeader = (props) => {
   const { overlayImage, mainText, subText } = props;
   console.log(overlayImage, mainText, subText);
+  //check if its small screen
+  const isSmallScreen = useMediaQuery('(max-width:850px)');
 
   return (
     <Box
@@ -65,7 +67,7 @@ const OverlayHeader = (props) => {
 
         }}
       >
-        <Box>
+        {!isSmallScreen?<Box>
           <img
             alt="Nirvana Enterprises"
             src="https://www.nirvanaenterprises.com/wp-content/uploads/nirvana-enterprises-logo-white.png"
@@ -74,7 +76,8 @@ const OverlayHeader = (props) => {
             height="60"
             
           ></img>
-        </Box>
+        </Box>:<></>}
+        
 
         <Typography
           sx={{

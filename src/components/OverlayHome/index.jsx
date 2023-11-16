@@ -1,12 +1,14 @@
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, Button, Typography, useMediaQuery } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "./style.css";
-import overlayImage from '../../assets/clients-small.jpg'
-
+import overlayImage from "../../assets/clients-small.jpg";
+import overlayImage2 from "../../assets/job-career.jpg";
+import overlayImage3 from "../../assets/services.jpg";
+import { Link } from "react-router-dom";
 const OverlayHome = () => {
   //check if its small screen
   const isSmallScreen = useMediaQuery("(max-width:850px)");
@@ -30,25 +32,74 @@ const OverlayHome = () => {
         className="mySwiper"
         sx={{ mt: "20px" }}
       >
-        <SwiperSlide><img
-        
-        src={`${overlayImage}`}
-       
-        loading="lazy"
-      />
-      </SwiperSlide>
         <SwiperSlide>
-            <Box sx={{backgroundImage:`${overlayImage}`}}>
-
-            </Box>
+          <Box
+            sx={{
+              position: "absolute",
+              height: "100%",
+              filter: "grayscale(0.4)",
+            }}
+          >
+            <img src={`${overlayImage}`} loading="lazy" />
+          </Box>
+          <Box sx={{ position: "relative", textAlign: "left" }}>
+            <Typography variant="h4" sx={{ color: "white" }}>
+              Digitally Transform your business with our IT Services
+            </Typography>
+            <Button>LEARN MORE</Button>
+          </Box>
         </SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-        <SwiperSlide>Slide 5</SwiperSlide>
-        <SwiperSlide>Slide 6</SwiperSlide>
-        <SwiperSlide>Slide 7</SwiperSlide>
-        <SwiperSlide>Slide 8</SwiperSlide>
-        <SwiperSlide>Slide 9</SwiperSlide>
+        <SwiperSlide>
+          <Box
+            sx={{
+              position: "absolute",
+              height: "100%",
+              filter: "grayscale(0.4)",
+            }}
+          >
+            <img src={`${overlayImage2}`} loading="lazy" />
+          </Box>
+          <Box sx={{ position: "relative", textAlign: "left" }}>
+            <Typography variant="h4" sx={{ color: "white" }}>
+              Turn your passion into a Career
+            </Typography>
+            <Button>LEARN MORE</Button>
+          </Box>
+        </SwiperSlide>
+        <SwiperSlide>
+          <Box
+            sx={{
+              position: "absolute",
+              height: "100%",
+              filter: "grayscale(0.4)",
+            }}
+          >
+            <img src={`${overlayImage3}`} loading="lazy" />
+          </Box>
+          <Box sx={{ position: "relative", textAlign: "left" }}>
+            <Typography variant="h4" sx={{ color: "white" }}>
+              Why our clients love us...
+            </Typography>
+            <Button>LEARN MORE</Button>
+          </Box>
+        </SwiperSlide>
+        <SwiperSlide>
+          <Box
+            sx={{
+              position: "absolute",
+              height: "100%",
+              filter: "grayscale(0.4)",
+            }}
+          >
+            <img src={`${overlayImage2}`} loading="lazy" />
+          </Box>
+          <Box sx={{ position: "relative", textAlign: "left" }}>
+            <Typography variant="h4" sx={{ color: "white" }}>
+              Learning creates Opportunities
+            </Typography>
+            <Button>LEARN MORE</Button>
+          </Box>
+        </SwiperSlide>
       </Swiper>
 
       {/* Background image

@@ -53,7 +53,7 @@ const LinkItems = [
 
 const Header = () => {
   //check if its small screen
-  const isSmallScreen = useMediaQuery('(max-width:850px)');
+  const isSmallScreen = useMediaQuery("(max-width:850px)");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -70,101 +70,97 @@ const Header = () => {
 
   return (
     <>
-   
-    {isSmallScreen? 
-      <AppBar>
-        <Toolbar>
+      {isSmallScreen ? (
+        <AppBar>
+          <Toolbar>
+            <Box>
+              <img
+                alt="Nirvana Enterprises"
+                src="https://www.nirvanaenterprises.com/wp-content/uploads/nirvana-enterprises-logo-white.png"
+                title="Nirvana Enterprises"
+                width="120"
+                height="30"
+              ></img>
+            </Box>
+          </Toolbar>
+        </AppBar>
+      ) : (
+        <StyledAppbar className="header" container>
           
-        <Box>
-          <img
-            alt="Nirvana Enterprises"
-            src="https://www.nirvanaenterprises.com/wp-content/uploads/nirvana-enterprises-logo-white.png"
-            title="Nirvana Enterprises"
-            width="120"
-            height="30"
-            
-          ></img>
-        </Box>
-          
-        </Toolbar>
-      </AppBar>
-      :
-      <StyledAppbar className="header" container>
-      {LinkItems.map((label, index) => (
-        <Grid sx={{ color: "white", m: 1 }} item key={index}>
-          {label.type === "link" ? (
-            <StyledNavLink to={label.to}>{label.name}</StyledNavLink>
-          ) : (
-            <>
-              <Box
-                id={`basic-button-${index}`}
-                aria-controls={anchorEl ? `basic-menu-${index}` : undefined}
-                aria-haspopup="true"
-                aria-expanded={anchorEl ? "true" : undefined}
+          {LinkItems.map((label, index) => (
+            <Grid sx={{ color: "white", m: 1 }} item key={index}>
+              {label.type === "link" ? (
+                <StyledNavLink to={label.to}>{label.name}</StyledNavLink>
+              ) : (
+                <>
 
-                onClick={handleClick}
-                onMouseOver={handleClick}
-              >
-                {label.name}
-              </Box>
-              
-              <Menu
-                to={label.to}
-                label={label.name}
-                id={`basic-menu-${index}`}
-                className='menu'
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl && anchorEl.id === `basic-button-${index}`)}
-                onClose={handleClose}
-                MenuListProps={{ onMouseLeave: handleClose }}
-                // sx={{
-                //   '& .MuiPaper-root': {
-                //     backgroundColor: 'your-dropdown-color',
-                //   },
-                // }}
-                sx={{
-                  '& .MuiPaper-root': {
-                    marginTop: 1,
-                    backgroundColor: '#00296b',
-                    '& .MuiButtonBase-root': {
-                      backgroundColor: '#00296b',
-                      "&:hover":{
-                        backgroundColor:  'blue',
-                      },
-                      "& .nav-link": {
-                        color: 'white',
-                        textDecoration: "none",
-                        "&:hover":{
-                          color: 'white',
+                
+                  <Box
+                    id={`basic-button-${index}`}
+                    aria-controls={anchorEl ? `basic-menu-${index}` : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={anchorEl ? "true" : undefined}
+                    onClick={handleClick}
+                    onMouseOver={handleClick}
+                  >
+                    {label.name}
+                  </Box>
+
+                  <Menu
+                    to={label.to}
+                    label={label.name}
+                    id={`basic-menu-${index}`}
+                    className="menu"
+                    anchorEl={anchorEl}
+                    open={Boolean(
+                      anchorEl && anchorEl.id === `basic-button-${index}`
+                    )}
+                    onClose={handleClose}
+                    MenuListProps={{ onMouseLeave: handleClose }}
+                    // sx={{
+                    //   '& .MuiPaper-root': {
+                    //     backgroundColor: 'your-dropdown-color',
+                    //   },
+                    // }}
+                    sx={{
+                      "& .MuiPaper-root": {
+                        marginTop: 1,
+                        backgroundColor: "#00296b",
+                        "& .MuiButtonBase-root": {
+                          backgroundColor: "#00296b",
+                          "&:hover": {
+                            backgroundColor: "blue",
+                          },
+                          "& .nav-link": {
+                            color: "white",
+                            textDecoration: "none",
+                            "&:hover": {
+                              color: "white",
+                            },
+                          },
                         },
-                      }
-                    }
-                  },
- }}
-
-
-
-
-
-
-
-              >
-                {label.items.map((subItem, subIndex) => (
-                  <MenuItem className='menuItem' key={subIndex} sx={{backgroundColor:'blue'}}>
-                    <Link to={subItem.to} onClick={handleClose}>
-                      {subItem.label}{" "}
-                    </Link>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </>
-          )}
-        </Grid>
-      ))}
-    </StyledAppbar>
-    } 
+                      },
+                    }}
+                  >
+                    {label.items.map((subItem, subIndex) => (
+                      <MenuItem
+                        className="menuItem"
+                        key={subIndex}
+                        sx={{ backgroundColor: "blue" }}
+                      >
+                        <Link to={subItem.to} onClick={handleClose}>
+                          {subItem.label}{" "}
+                        </Link>
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </>
+              )}
+            </Grid>
+          ))}
+        </StyledAppbar>
+      )}
     </>
-    
   );
 };
 

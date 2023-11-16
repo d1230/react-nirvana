@@ -26,6 +26,21 @@ const OverlayHome = () => {
         overflow: "hidden", // Hide overflowing content
       }}
     >
+      <Box
+        className="logoName"
+        sx={{ position: "absolute", zIndex: 2, top: 30, left: 20 }}
+      >
+        <Link to="/">
+          <img
+            alt="Nirvana Enterprises"
+            src="https://www.nirvanaenterprises.com/wp-content/uploads/nirvana-enterprises-logo-white.png"
+            title="Nirvana Enterprises"
+            width="250"
+            height="60"
+          ></img>
+        </Link>
+      </Box>
+
       <Swiper
         navigation={true}
         modules={[Navigation]}

@@ -42,7 +42,7 @@ const Clients = () => {
           <Typography sx={{fontSize:'16px'}}>If you are a company looking for IT Services, please contact us here.</Typography>
         </Grid>
         <Grid item sm={1} md={1}></Grid>
-        <Grid item sm={4} md={3} sx={{backgroundColor:'#1E72BD', color:'white', padding:5, height:'200px'}}>
+        <Grid item sm={4} md={3} sx={{backgroundColor:'#1E72BD', color:'white', padding:5, height:'50%'}}>
           <Typography variant="h4" sx={{mb:1}}>NEXT STEPS</Typography>
           <Typography variant="body1" sx={{mb: '1.5em'}}>Nirvana Enterprises has the world-class experience and expertise that you need.</Typography>
           

@@ -26,6 +26,8 @@ const OverlayHome = () => {
         overflow: "hidden", // Hide overflowing content
       }}
     >
+
+{!isSmallScreen?
       <Box
         className="logoName"
         sx={{ position: "absolute", zIndex: 2, top: 30, left: 20 }}
@@ -39,7 +41,7 @@ const OverlayHome = () => {
             height="60"
           ></img>
         </Link>
-      </Box>
+      </Box>:<></>}
 
       <Swiper
         navigation={true}
@@ -51,7 +53,9 @@ const OverlayHome = () => {
           <Box
             sx={{
               position: "absolute",
+              width: '100%',
               height: "100%",
+              
               filter: "grayscale(0.4)",
             }}
           >

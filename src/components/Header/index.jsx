@@ -86,15 +86,12 @@ const Header = () => {
         </AppBar>
       ) : (
         <StyledAppbar className="header" container>
-          
           {LinkItems.map((label, index) => (
             <Grid sx={{ color: "white", m: 1 }} item key={index}>
               {label.type === "link" ? (
                 <StyledNavLink to={label.to}>{label.name}</StyledNavLink>
               ) : (
                 <>
-
-                
                   <Box
                     id={`basic-button-${index}`}
                     aria-controls={anchorEl ? `basic-menu-${index}` : undefined}

@@ -1,17 +1,13 @@
 import { Grid, Typography } from "@mui/material";
 import OverlayHeader from "../../components/OverlayHeader";
 import text from "../../configs/Text";
-
+import { Swiper, SwiperSlide } from 'swiper/react';
+import OverlayHome from "../../components/OverlayHome";
 
 const Home = () => {
   return (
     <>
-      <OverlayHeader
-        //overlayImage={geometry}
-        
-        mainText='home'
-        subText={text.contact.sub}
-      ></OverlayHeader>
+      <OverlayHome></OverlayHome>
 
       <Grid className="find" container sx={{ zIndex:2,height:'100%',p:10 }}>
         <Grid item sm={8} md={8}>

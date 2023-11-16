@@ -41,6 +41,7 @@ const theme = createTheme({
     h2: {
       fontWeight: 700,
       fontSize: '2.5rem',
+      color:'red',
     },
     h3: {
       fontWeight: 700,
@@ -49,6 +50,8 @@ const theme = createTheme({
     h4: {
       fontWeight: 700,
       fontSize: '1.7rem',
+     
+      
     },
     h5: {
       fontWeight: 600,
@@ -57,6 +60,14 @@ const theme = createTheme({
     h6: {
       fontWeight: 600,
       fontSize: '1rem',
+    },
+    body1: {
+      fontWeight: 400,
+      fontSize: '0.875rem',//14px
+    },
+    body2: {
+      fontWeight: 400,
+      fontSize: '1.3rem',//20px
     },
   },
   components: {

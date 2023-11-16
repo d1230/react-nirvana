@@ -11,7 +11,7 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import { StyledAppbar, StyledNavLink } from "./Header.style";
+import { StyledAppbar, StyledNavLink, styledMenu } from "./Header.style";
 import { Link } from "react-router-dom";
 import React from "react";
 //import moment from 'moment';
@@ -107,10 +107,12 @@ const Header = () => {
               >
                 {label.name}
               </Box>
+              
               <Menu
                 to={label.to}
                 label={label.name}
                 id={`basic-menu-${index}`}
+                className='menu'
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl && anchorEl.id === `basic-button-${index}`)}
                 onClose={handleClose}
@@ -120,9 +122,35 @@ const Header = () => {
                 //     backgroundColor: 'your-dropdown-color',
                 //   },
                 // }}
+                sx={{
+                  '& .MuiPaper-root': {
+                    marginTop: 1,
+                    backgroundColor: '#00296b',
+                    '& .MuiButtonBase-root': {
+                      backgroundColor: '#00296b',
+                      "&:hover":{
+                        backgroundColor:  'blue',
+                      },
+                      "& .nav-link": {
+                        color: 'white',
+                        textDecoration: "none",
+                        "&:hover":{
+                          color: 'white',
+                        },
+                      }
+                    }
+                  },
+ }}
+
+
+
+
+
+
+
               >
                 {label.items.map((subItem, subIndex) => (
-                  <MenuItem key={subIndex} sx={{backgroundColor:'blue'}}>
+                  <MenuItem className='menuItem' key={subIndex} sx={{backgroundColor:'blue'}}>
                     <Link to={subItem.to} onClick={handleClose}>
                       {subItem.label}{" "}
                     </Link>

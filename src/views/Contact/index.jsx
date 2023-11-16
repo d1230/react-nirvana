@@ -11,8 +11,8 @@ const Contact = () => {
       <OverlayHeader
         overlayImage={contact}
         
-        mainText={text.contact.main}
-        subText={text.contact.sub}
+        mainText={text.contact.Header.main}
+        subText={text.contact.Header.sub}
       ></OverlayHeader>
 
       <Grid className="find" container sx={{ zIndex:2,height:'100%',p:10 }}>

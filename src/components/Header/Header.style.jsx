@@ -1,4 +1,4 @@
-import { AppBar, Box, Grid, styled } from "@mui/material";
+import { AppBar, Box, Grid, Menu, styled } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
 const StyledAppbar = styled(Grid)(({ theme }) => ({
@@ -41,4 +41,27 @@ const StyledNavLink = styled(NavLink)(({ theme }) => ({
   },
 }));
 
-export { StyledAppbar, StyledNavLink };
+
+
+const  styledMenu = styled(Menu)(({theme})=>({
+  
+    '& .MuiPaper-root': {
+      marginTop: 1,
+      backgroundColor: '#00296b',
+      '& .MuiButtonBase-root': {
+        backgroundColor: '#00296b',
+        "&:hover":{
+          backgroundColor:  theme.palette.secondary.main
+        },
+        "& .nav-link": {
+          color: 'white',
+          textDecoration: "none",
+          "&:hover":{
+            color: theme.palette.common.white,
+
+          },
+        }}}
+
+}));
+
+export { StyledAppbar, StyledNavLink ,styledMenu };

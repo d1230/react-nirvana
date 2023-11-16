@@ -1,27 +1,57 @@
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
+import "./style.css";
+import overlayImage from '../../assets/clients-small.jpg'
 
-
-const OverlayHeader = (props) => {
-  const { overlayImage, mainText, subText } = props;
-  console.log(overlayImage, mainText, subText);
+const OverlayHome = () => {
   //check if its small screen
-  const isSmallScreen = useMediaQuery('(max-width:850px)');
+  const isSmallScreen = useMediaQuery("(max-width:850px)");
 
   return (
     <Box
       sx={{
         //overlay image css
         //position: "absolute",
-        top:'21px',
-        left:0,
-        right:0,
+        top: "21px",
+        left: 0,
+        right: 0,
         width: "100%",
         height: "50vh", // Set the height as needed
         overflow: "hidden", // Hide overflowing content
       }}
     >
-      {/* Background image */}
+      <Swiper
+        navigation={true}
+        modules={[Navigation]}
+        className="mySwiper"
+        sx={{ mt: "20px" }}
+      >
+        <SwiperSlide><img
+        
+        src={`${overlayImage}`}
+       
+        loading="lazy"
+      />
+      </SwiperSlide>
+        <SwiperSlide>
+            <Box sx={{backgroundImage:`${overlayImage}`}}>
+
+            </Box>
+        </SwiperSlide>
+        <SwiperSlide>Slide 3</SwiperSlide>
+        <SwiperSlide>Slide 4</SwiperSlide>
+        <SwiperSlide>Slide 5</SwiperSlide>
+        <SwiperSlide>Slide 6</SwiperSlide>
+        <SwiperSlide>Slide 7</SwiperSlide>
+        <SwiperSlide>Slide 8</SwiperSlide>
+        <SwiperSlide>Slide 9</SwiperSlide>
+      </Swiper>
+
+      {/* Background image
       <Box
         sx={{
           position: "relative",
@@ -29,7 +59,7 @@ const OverlayHeader = (props) => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundImage: `url(${overlayImage})`,
+          //backgroundImage: `url(${overlayImage})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
@@ -59,7 +89,6 @@ const OverlayHeader = (props) => {
       >
         {!isSmallScreen?
         <Box>
-          <Link to="/" >
           <img
             alt="Nirvana Enterprises"
             src="https://www.nirvanaenterprises.com/wp-content/uploads/nirvana-enterprises-logo-white.png"
@@ -67,7 +96,7 @@ const OverlayHeader = (props) => {
             width="250"
             height="60"
             
-          ></img></Link>
+          ></img>
         </Box>:<></>}
         
 
@@ -84,7 +113,7 @@ const OverlayHeader = (props) => {
             height: '20vh',
           }}
         >
-          {mainText}
+         main
         </Typography>
         <Typography
           sx={{
@@ -96,12 +125,11 @@ const OverlayHeader = (props) => {
             height: '20vh',
           }}
         >
-          {subText}
+          sub
         </Typography>
-      </Box>
-      
+      </Box> */}
     </Box>
   );
 };
 
-export default OverlayHeader;
+export default OverlayHome;

@@ -9,8 +9,8 @@ const About= () => {
       <OverlayHeader
         overlayImage={geometry}
         
-        mainText={text.contact.main}
-        subText={text.contact.sub}
+        mainText={text.about.Header.main}
+        subText={text.about.Header.sub}
       ></OverlayHeader>
 
       <Grid className="find" container sx={{ zIndex:2,height:'100%',p:10 }}>

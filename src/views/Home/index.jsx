@@ -54,15 +54,15 @@ const Home = () => {
             </Typography></Box>
           </Box>
           <Grid container sx={{ width: '100%' }}>
-            <Grid item md={5}>
+            <Grid item md={4} sx={{m:'10px'}}>
               {" "}
               <TextField
                 id="outlined-basic"
                 label="job title, keywords. e.g. hadoop"
                 variant="outlined" fullWidth 
-              />{" "}
+              />
             </Grid>
-            <Grid item md={4}>
+            <Grid item md={4} sx={{m:'10px'}}>
               {" "}
               <TextField
                 id="outlined-basic"
@@ -70,9 +70,9 @@ const Home = () => {
                 variant="outlined" fullWidth 
               />{" "}
             </Grid>
-            <Grid item md={3}>
-              {" "}
-              <Button>Search IT Jobs</Button>{" "}
+            <Grid item md={3} sx={{mt:'15px', float:'right', height:'100%'}}>
+              
+              <Button>Search IT Jobs</Button>
             </Grid>
           </Grid>
         </Grid>

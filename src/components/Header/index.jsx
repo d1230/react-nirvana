@@ -92,16 +92,16 @@ const Header = () => {
                 <StyledNavLink to={label.to}>{label.name}</StyledNavLink>
               ) : (
                 <>
-                  <Box
+                  <Link
                     id={`basic-button-${index}`}
                     aria-controls={anchorEl ? `basic-menu-${index}` : undefined}
                     aria-haspopup="true"
                     aria-expanded={anchorEl ? "true" : undefined}
-                    onClick={handleClick}
+                    style={{color:'white',textDecoration:'none'}}
                     onMouseOver={handleClick}
                   >
                     {label.name}
-                  </Box>
+                  </Link>
 
                   <Menu
                     to={label.to}
@@ -112,13 +112,10 @@ const Header = () => {
                     open={Boolean(
                       anchorEl && anchorEl.id === `basic-button-${index}`
                     )}
+                    
                     onClose={handleClose}
+                    onMouseLeave={handleClose}
                     MenuListProps={{ onMouseLeave: handleClose }}
-                    // sx={{
-                    //   '& .MuiPaper-root': {
-                    //     backgroundColor: 'your-dropdown-color',
-                    //   },
-                    // }}
                     sx={{
                       "& .MuiPaper-root": {
                         marginTop: 1,
@@ -126,9 +123,9 @@ const Header = () => {
                         "& .MuiButtonBase-root": {
                           backgroundColor: "#00296b",
                           "&:hover": {
-                            backgroundColor: "blue",
+                            backgroundColor: "#003F88",
                           },
-                          "& .nav-link": {
+                          "& .linkClass": {
                             color: "white",
                             textDecoration: "none",
                             "&:hover": {
@@ -145,7 +142,11 @@ const Header = () => {
                         key={subIndex}
                         sx={{ backgroundColor: "blue" }}
                       >
-                        <Link to={subItem.to} onClick={handleClose}>
+                        <Link
+                          to={subItem.to}
+                          onClick={handleClose}
+                          className="linkClass"
+                        >
                           {subItem.label}{" "}
                         </Link>
                       </MenuItem>

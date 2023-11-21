@@ -2,9 +2,9 @@ import { AppBar, Box, Grid, Menu, styled } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
 const StyledAppbar = styled(Grid)(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.main,
+  backgroundColor: 'rgb(0, 41, 107)',
   color: theme.palette.common.white,
-  width: '493px',
+  width: 'auto',
   right: 100,
   marginTop: 30,
  

@@ -6,7 +6,8 @@ const UpperAppbar = styled(Box)(({ theme }) => ({
 
   const StyledAppbar = styled(AppBar)(({ theme }) => ({
     backgroudColor: theme.palette.primary.main,
-    margin:1
+    padding:5,
+    marginBottom:5
  }));
  
 

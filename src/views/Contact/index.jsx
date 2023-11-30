@@ -35,8 +35,8 @@ const Contact = () => {
   const {
     getRootProps,
     getInputProps,
-    open,
-    acceptedFiles,
+    open,setFieldValue,
+    acceptedFiles,isDragActive
   } = useDropzone({
     // Disable click and keydown behavior
     noClick: true,
@@ -65,7 +65,7 @@ const Contact = () => {
         .required("Name is Required"),
       email: Yup.string().required("Email is Required"),
       text: Yup.string(),
-      pdfFile: Yup.mixed().required("pdfFile is Required"),
+      pdfFile: Yup.mixed(),
     }),
     onSubmit: (values, { resetForm }) => {
       alert(values);
@@ -145,9 +145,9 @@ const Contact = () => {
                 label="pdfFile"
                 value={formikForm.values.pdfFile}
                 onChange={formikForm.handleChange}
-                
+               
                 />
-                <p>Drag 'n' drop some files here</p>
+                <p>{isDragActive ? 'Drop the files here ...' : 'Drag \'n\' drop some files here, or click to select files'}</p>
                 <em>
                   ( 1 file is the maximum number of file you can attach here )
                 </em>

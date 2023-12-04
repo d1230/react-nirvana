@@ -79,7 +79,7 @@ const Contact = () => {
         container
         sx={{ zIndex: 2, height: "100%", p: 10, width: "100%" }}
       >
-        <Grid item sm={8} md={8}>
+        <Grid item sm={8} md={8} >
           <Box sx={{ width: "75%", display: "grid", justifyContent: "center" }}>
             <Typography
               variant="body3"
@@ -225,12 +225,20 @@ const Contact = () => {
             <Button type="submit">Submit</Button>
           </form>
         </Grid>
-        <Grid item sm={4} md={4}>
-          <Typography variant="h3">{text.contact.Body.Third.Title}</Typography>
-          <Typography variant="h5">Corporate HQ</Typography>
-
-          <Typography variant="body">
-            1581 Route 27, Suite 107, Edison, NJ 08817
+        <Grid item sm={4} md={4} sx={{width:'25%' ,float:'left'}}>
+          <Typography variant="h6" sx={{fontWeight: '600',mb:'20px'}}>{text.contact.Body.Third.Title}</Typography>
+          <Typography variant="body3" sx={{fontWeight:'600'}}>Corporate HQ</Typography>
+          <Typography>{''}</Typography>
+          <Typography variant="body3">
+            1581 Route 27,
+          </Typography>
+          <Typography>{''}</Typography>
+          <Typography variant="body3">
+           Suite 107, 
+          </Typography>
+          <Typography>{''}</Typography>
+          <Typography variant="body3">
+           Edison, NJ 08817
           </Typography>
         </Grid>
       </Grid>

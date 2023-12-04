@@ -1,26 +1,13 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import contact from "../../assets/contact.jpg";
 import text from "../../configs/Text";
 import OverlayHeader from "../../components/OverlayHeader";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDropzone } from "react-dropzone";
-import React, { useCallback, useEffect } from "react";
-
-//const staticServicesR = "1581 Route 27,Suite 107,Edison";
+import { useEffect } from "react";
 
 const Contact = () => {
-
-  // function nameLengthValidator(file) {
-  //   if (file.name.length > maxLength) {
-  //     return {
-  //       code: "name-too-large",
-  //       message: `Name is larger than ${maxLength} characters`
-  //     };
-  //   }
-
-  //   return null
-  // }
   function fileSizeValidator(file) {
     const maxSize = 400;
     if (file.name.size > maxSize) {
@@ -32,32 +19,33 @@ const Contact = () => {
 
     return null;
   }
-  const {
-    getRootProps,
-    getInputProps,
-    open,setFieldValue,
-    acceptedFiles,isDragActive
-  } = useDropzone({
-    // Disable click and keydown behavior
-    noClick: true,
-    noKeyboard: true,
-    accept: {
-      application: [".doc", ".docx", ".pdf"],
+  const { getRootProps, getInputProps, acceptedFiles, isDragActive } =
+    useDropzone({
+      // Disable click and keydown behavior
+      noClick: false,
+      noKeyboard: true,
+      accept: {
+        application: [".doc", ".docx", ".pdf"],
+      },
+      maxFiles: 1,
+      validator: fileSizeValidator,
+      onDrop: (acceptedFiles) => {
+        formikForm.setFieldValue("file", acceptedFiles);
+      },
+    });
 
-    },
-    maxFiles: 1,
-    validator: fileSizeValidator,
-    onDrop:acceptedFiles => {setFieldValue("files", acceptedFiles);}
-  });
-
-  const files = acceptedFiles.map((file) => (
+  let files = acceptedFiles.map((file) => (
     <li key={file.path}>
       {file.path} - {file.size} bytes
     </li>
   ));
 
+  //   const [files, setFiles] = setState(`<li key={file.path}>
+  //   {file.path} - {file.size} bytes
+  // </li>`)
+
   const formikForm = useFormik({
-    initialValues: { name: "", email: "", text: "", resume: "" },
+    initialValues: { name: "", email: "", text: "" },
     validationSchema: Yup.object({
       name: Yup.string()
         .min(2, "Minimum 2 Characters")
@@ -65,17 +53,19 @@ const Contact = () => {
         .required("Name is Required"),
       email: Yup.string().required("Email is Required"),
       text: Yup.string(),
-      pdfFile: Yup.mixed(),
+      file: Yup.mixed(),
     }),
     onSubmit: (values, { resetForm }) => {
-      alert(values);
+      //alert(values);
+      //acceptedFiles = '';
+
       console.log(values);
       resetForm({ values: "" });
     },
   });
-  useEffect(()=>{
-   console.log(formikForm) 
-  })
+  useEffect(() => {
+    console.log(formikForm);
+  });
   return (
     <>
       <OverlayHeader
@@ -87,19 +77,51 @@ const Contact = () => {
       <Grid
         className="find"
         container
-        sx={{ zIndex: 2, height: "100%", p: 10 }}
+        sx={{ zIndex: 2, height: "100%", p: 10, width: "100%" }}
       >
         <Grid item sm={8} md={8}>
-          <Typography variant="h3">{text.contact.Body.First.Title}</Typography>
-          <Typography>{text.contact.Body.First.Body}</Typography>
-          <Typography variant="h3">{text.contact.Body.Second.Title}</Typography>
-          <Typography>{text.contact.Body.First.Body}</Typography>
+          <Box sx={{ width: "75%", display: "grid", justifyContent: "center" }}>
+            <Typography
+              variant="body3"
+              sx={{ fontWeight: "600", fontSize: "20px" }}
+            >
+              {text.contact.Body.First.Title}
+            </Typography>
+            <Typography  variant="body3" style={{ marginBottom: "1.5em" }}>
+              {text.contact.Body.First.Body}
+            </Typography>
+            <Typography
+               variant="body3"
+              sx={{ fontWeight: "600", fontSize: "20px" }}
+            >
+              {text.contact.Body.Second.Title}
+            </Typography>
+            <Typography  variant="body3" style={{ marginBottom: "1.5em" }}>
+              {text.contact.Body.First.Body}
+            </Typography>
+          </Box>
 
-          <form onSubmit={formikForm.handleSubmit}  >
+          <form
+            onSubmit={formikForm.handleSubmit}
+            style={{
+              textAlign: "center",
+              border: "2px solid #e8e8e8",
+              padding: "10px",
+              marginTop: "30px",
+            }}
+          >
+            <Typography variant="h3">Contact Us..</Typography>
             <TextField
+              sx={{
+                "& .MuiFormLabel-root": {
+                  color: "#bdbdbd",
+                },
+                width: "40%",
+                mr: "3vh",
+              }}
               id="name"
               name="name"
-              label="name"
+              label="name *"
               value={formikForm.values.name}
               onChange={formikForm.handleChange}
               error={formikForm.touched.name && Boolean(formikForm.errors.name)}
@@ -109,9 +131,16 @@ const Contact = () => {
               margin="dense"
             />
             <TextField
+              sx={{
+                "& .MuiFormLabel-root": {
+                  color: "#bdbdbd",
+                },
+
+                width: "50%",
+              }}
               id="email"
               name="email"
-              label="email"
+              label="email *"
               value={formikForm.values.email}
               onChange={formikForm.handleChange}
               error={
@@ -123,7 +152,12 @@ const Contact = () => {
               margin="dense"
             />
             <TextField
-              fullWidth
+              sx={{
+                "& .MuiFormLabel-root": {
+                  color: "#bdbdbd",
+                },
+                width: "95%",
+              }}
               id="text"
               name="text"
               label="text"
@@ -132,36 +166,62 @@ const Contact = () => {
               error={formikForm.touched.text && Boolean(formikForm.errors.text)}
               helperText={formikForm.touched.text && formikForm.errors.text}
               variant="filled"
-              multiline
-              maxRows={4}
               margin="normal"
             />
 
-            <section  className="container">
-              <div {...getRootProps({ className: "dropzone" })}>
-                <input {...getInputProps()}
-                id="pdfFile"
-                name="pdfFile"
-                label="pdfFile"
-                value={formikForm.values.pdfFile}
-                onChange={formikForm.handleChange}
-               
+            <Box
+              fullWidth
+              className="dropzone-container"
+              sx={{
+                mb: "20px",
+                p: "5px",
+                border: "2px solid #e8e8e8",
+                textAlign: "left",
+              }}
+            >
+              <Paper
+                {...getRootProps({ className: "dropzone" })}
+                sx={{
+                  border: "dotted #eeeeee",
+                  borderWidth: "1px",
+                  p: "5px",
+                  textAlign: "center",
+                  backgroundColor: "#fafafa",
+                  color: "#bdbdbd",
+                }}
+              >
+                <input
+                  {...getInputProps()}
+                  id="file"
+                  name="file"
+                  label="file"
+                  //value={formikForm.values.file}
+                  onChange={(e) => {
+                    console.log("e", e);
+                  }}
                 />
-                <p>{isDragActive ? 'Drop the files here ...' : 'Drag \'n\' drop some files here, or click to select files'}</p>
+                <p>
+                  {isDragActive
+                    ? "Drop the files here ..."
+                    : "Drag 'n' drop some files here, or click to select files"}
+                </p>
                 <em>
                   ( 1 file is the maximum number of file you can attach here )
                 </em>
-                
-                <button type="button" onClick={open}>
-                  Open File Dialog
-                </button>
-              </div>
-              <aside>
-                <h4>Files</h4>
-                <ul>{files}</ul>
-              </aside>
-            </section >
+                <p></p>
 
+                {/* <button type="button" onClick={open}>
+                  Open File Dialog
+                </button> */}
+              </Paper>
+              <aside style={{ textAlign: "left" }}>
+                <Typography variant="h5" sx={{ color: "#bdbdbd" }}>
+                  Files
+                </Typography>
+                <Box>{files}</Box>
+              </aside>
+            </Box>
+            <p></p>
             <Button type="submit">Submit</Button>
           </form>
         </Grid>

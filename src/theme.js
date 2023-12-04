@@ -27,7 +27,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Poppins',
+    fontFamily: 'Helvetica',
     button: {
       fontWeight: 600,
     },
@@ -69,6 +69,14 @@ const theme = createTheme({
       fontWeight: 400,
       fontSize: '1.3rem',//20px
     },
+    body3:{
+      fontSize:'16px',
+      lineHeight: "1.8"
+    },
+    subtitle3: {
+      fontSize:'16px',
+      lineHeight: "1.8"
+    }
   },
   components: {
     MuiButton: {

@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDropzone } from "react-dropzone";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Contact = () => {
   function fileSizeValidator(file) {
@@ -88,7 +89,7 @@ const Contact = () => {
               {text.contact.Body.First.Title}
             </Typography>
             <Typography  variant="body3" style={{ marginBottom: "1.5em" }}>
-              {text.contact.Body.First.Body}
+            If you are a company looking for Top IT Talent or IT Services to optimize your business processes and strengthen your IT infrastructure, please email us at clients@nirvanaenterprises.com or simply call us at 732.889.4242.
             </Typography>
             <Typography
                variant="body3"
@@ -97,7 +98,7 @@ const Contact = () => {
               {text.contact.Body.Second.Title}
             </Typography>
             <Typography  variant="body3" style={{ marginBottom: "1.5em" }}>
-              {text.contact.Body.First.Body}
+            If you are an IT professional searching for your next great job, please email us at <a href="mailto:jobs@nirvanaenterprises.com">jobs@nirvanaenterprises.com</a> or simply call us on <a href="tel:1-732-889-4242">732.889.4242</a>.
             </Typography>
           </Box>
 
@@ -126,7 +127,7 @@ const Contact = () => {
               onChange={formikForm.handleChange}
               error={formikForm.touched.name && Boolean(formikForm.errors.name)}
               helperText={formikForm.touched.name && formikForm.errors.name}
-              variant="filled"
+              variant="outlined"
               size="small"
               margin="dense"
             />
@@ -135,8 +136,11 @@ const Contact = () => {
                 "& .MuiFormLabel-root": {
                   color: "#bdbdbd",
                 },
+                "& .Mui-error":{color:'#d32f2f !important'},
+                
 
                 width: "50%",
+               
               }}
               id="email"
               name="email"
@@ -147,7 +151,7 @@ const Contact = () => {
                 formikForm.touched.email && Boolean(formikForm.errors.email)
               }
               helperText={formikForm.touched.email && formikForm.errors.email}
-              variant="filled"
+              variant="outlined"
               size="small"
               margin="dense"
             />
@@ -165,8 +169,10 @@ const Contact = () => {
               onChange={formikForm.handleChange}
               error={formikForm.touched.text && Boolean(formikForm.errors.text)}
               helperText={formikForm.touched.text && formikForm.errors.text}
-              variant="filled"
+              variant="outlined"
               margin="normal"
+              multiline
+          rows={4}
             />
 
             <Box

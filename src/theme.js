@@ -23,7 +23,7 @@ const theme = createTheme({
     },
     text: {
       primary: '#222222',
-      secondary: '#f4b721',
+      secondary: '#bdbdbd',//gray
     },
   },
   typography: {
@@ -78,6 +78,7 @@ const theme = createTheme({
       lineHeight: "1.8"
     }
   },
+  Link:{ color:'#1e73be'},
   components: {
     MuiButton: {
       defaultProps: {

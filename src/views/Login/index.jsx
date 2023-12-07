@@ -3,14 +3,15 @@ import { Form } from "formik";
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useSelector, useDispatch } from 'react-redux'
-import { update, logOut } from '../../features/slicer/credentialSlicer'
-import { Navigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { update, logOut } from "../../features/slicer/credentialSlicer";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-
-  const credential = useSelector(state => state.credential.value)
-  const dispatch = useDispatch()
+  
+  const credential = useSelector((state) => state.credential.value);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const LoginFormik = useFormik({
     initialValues: { id: "", password: "" },
@@ -21,12 +22,11 @@ const Login = () => {
     onSubmit: (values, { resetForm }) => {
       console.log(values);
       //mock credential check
-      if(values.id==='1' && values.password==='1'){
-        dispatch(update('admin'));
-        
-
-      }console.log(credential);
-      if(credential) Navigate('/dashboard');
+      if (values.id === "1" && values.password === "1") {
+        dispatch(update("admin"));
+      }
+      console.log(credential);
+     // if (credential) navigate("/dashboard");
       resetForm({ values: "" });
     },
   });
@@ -39,14 +39,16 @@ const Login = () => {
         height: "100vh",
       }}
     >
-      
-      <form onSubmit={LoginFormik.handleSubmit} style={{ width: "200px", textAlign:'center' }}>
+      <form
+        onSubmit={LoginFormik.handleSubmit}
+        style={{ width: "200px", textAlign: "center" }}
+      >
         <Typography variant="body3">Login</Typography>
         <TextField
-        fullWidth
-        id="id"
-              name="id"
-              label="id *"
+          fullWidth
+          id="id"
+          name="id"
+          label="id *"
           value={LoginFormik.values.id}
           onChange={LoginFormik.handleChange}
           error={LoginFormik.touched.name && Boolean(LoginFormik.errors.id)}
@@ -56,10 +58,10 @@ const Login = () => {
           variant="outlined"
         ></TextField>
         <TextField
-        fullWidth
-        id="password"
-              name="password"
-              label="password *"
+          fullWidth
+          id="password"
+          name="password"
+          label="password *"
           value={LoginFormik.values.password}
           onChange={LoginFormik.handleChange}
           error={
@@ -71,10 +73,8 @@ const Login = () => {
           size="small"
           margin="dense"
           variant="outlined"
-          
-          
         ></TextField>
-        <Button type='submit'>Login</Button>
+        <Button type="submit">Login</Button>
       </form>
     </Paper>
   );

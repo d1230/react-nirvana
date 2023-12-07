@@ -5,15 +5,22 @@ import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import Router from "./routes/Router";
 import './main.css';
-import store from './store/store'
-import { Provider } from 'react-redux'
+
+import { Provider } from 'react-redux';
+ import { PersistGate } from 'redux-persist/integration/react';
+import  {persistor} from './store/store';
+import store from './store/store';
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
     <Provider store={store}>
+     <PersistGate loading={null} persistor={persistor}>
       <BrowserRouter>
         <Router />
-      </BrowserRouter></Provider>
+      </BrowserRouter>
+      
+       </PersistGate> 
+      </Provider>
     </ThemeProvider>
   </React.StrictMode>
 );

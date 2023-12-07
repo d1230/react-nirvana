@@ -24,7 +24,7 @@ const Dashboard = () => {
       }}
     >
 
-        <div>Dashboard</div>
+        <div className='dashboard'>Dashboard</div>
         <Button onClick={logoutHandler}>logout</Button>
     </Paper>
     

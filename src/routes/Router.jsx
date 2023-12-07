@@ -41,7 +41,7 @@ function Router() {
             path: '/',
             element: <PrivateLayout />,
             children: [
-              { path: '/dashboard', element:credential ? <Navigate to="/dashboard" /> : <Login /> },
+              { path: 'dashboard', element:credential ? <Navigate to="/dashboard" /> : <Login /> },
             //   { path: '/users', element: <Users /> },
               // Add more child routes as needed
             ],

@@ -25,7 +25,7 @@ const Login = () => {
       console.log(values);
       //mock credential check
       signinMutation({
-        "username": "admin2",
+        "username": "admin1",
         "password": "test@123"
     })
       // if (values.id === "1" && values.password === "1") {

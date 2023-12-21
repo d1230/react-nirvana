@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import { useDropzone } from "react-dropzone";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { usePostResumeMutation } from "../../services/useApi";
 
 const Contact = () => {
   function fileSizeValidator(file) {
@@ -44,7 +45,8 @@ const Contact = () => {
   //   const [files, setFiles] = setState(`<li key={file.path}>
   //   {file.path} - {file.size} bytes
   // </li>`)
-
+const [postResume,postResumeStatus]= usePostResumeMutation()
+//console.log(postResume,postResumeStatus);
   const formikForm = useFormik({
     initialValues: { name: "", email: "", text: "" },
     validationSchema: Yup.object({
@@ -57,11 +59,21 @@ const Contact = () => {
       file: Yup.mixed(),
     }),
     onSubmit: (values, { resetForm }) => {
-      //alert(values);
-      //acceptedFiles = '';
-
-      console.log(values);
-      resetForm({ values: "" });
+      
+     console.log(values);
+      const formData = new FormData();
+      formData.append('name', values.name)
+      
+      formData.append('description', values.text)
+      formData.append('email', values.email)
+      formData.append('resumeFile', values.file[0])
+      
+     console.log(formData);
+     for (var pair of formData.entries()) {
+      console.log(pair[0]+ ', ' + pair[1]); 
+  }
+  postResume(formData);
+      //resetForm({ values: "" });
     },
   });
   useEffect(() => {
@@ -176,7 +188,7 @@ const Contact = () => {
             />
 
             <Box
-              fullWidth
+              
               className="dropzone-container"
               sx={{
                 mb: "20px",

@@ -8,9 +8,7 @@ import UpperHeader from "../UpperHeader";
 const Layout = () => {
   return (
     <>
-      <UpperHeader />
 
-      <Header />
 
       <Suspense fallback={<>Loading</>}>
         <Box sx={{ margin: "0px" }}>
@@ -18,7 +16,7 @@ const Layout = () => {
         </Box>
       </Suspense>
 
-      <Footer />
+    
     </>
   );
 };

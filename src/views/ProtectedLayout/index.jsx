@@ -3,12 +3,24 @@ import { Navigate, Outlet } from "react-router-dom";
 
 import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
+import UpperHeader from "../../components/UpperHeader";
+import { Footer, Header } from "../../components";
 
 
 const ProtectedLayout = () => {
  
     const credential = useSelector((state) => state.credential.value);
-    return <>{!credential ? <Outlet /> : <Navigate to="/dashboard" />}</>;
+    return <>
+    
+    <UpperHeader />
+
+      <Header />
+    {!credential ? <Outlet /> : <Navigate to="/dashboard" />}
+    
+    
+    <Footer />
+    </>;
+
 
 }
 

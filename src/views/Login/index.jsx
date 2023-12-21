@@ -6,25 +6,31 @@ import * as Yup from "yup";
 import { useSelector, useDispatch } from "react-redux";
 import { update, logOut } from "../../features/slicer/credentialSlicer";
 import { useNavigate } from "react-router-dom";
-
+import { useSigninMutation } from "../../services/useApi";
 const Login = () => {
   
   const credential = useSelector((state) => state.credential.value);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [signinMutation,signinMutationState] = useSigninMutation();
 
+//console.log('signinMutation',signinMutation,signinMutationState);
   const LoginFormik = useFormik({
     initialValues: { id: "", password: "" },
     validationSchema: Yup.object({
-      id: Yup.string().required("ID is Required"),
+      id: Yup.string().required("ID is Required"),//.email('Not proper email format'),
       password: Yup.string().required("Password is Required"),
     }),
     onSubmit: (values, { resetForm }) => {
       console.log(values);
       //mock credential check
-      if (values.id === "1" && values.password === "1") {
-        dispatch(update("admin"));
-      }
+      signinMutation({
+        "username": "admin2",
+        "password": "test@123"
+    })
+      // if (values.id === "1" && values.password === "1") {
+      //   //dispatch(update("admin"));
+      // }
       console.log(credential);
      // if (credential) navigate("/dashboard");
       resetForm({ values: "" });
@@ -37,11 +43,12 @@ const Login = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+       
       }}
     >
       <form
         onSubmit={LoginFormik.handleSubmit}
-        style={{ width: "200px", textAlign: "center" }}
+        style={{ width: "200px", textAlign: "center", border:'solid 1px #bdbdbd ',padding:'10px' }}
       >
         <Typography variant="body3">Login</Typography>
         <TextField

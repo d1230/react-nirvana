@@ -483,7 +483,7 @@ const Dashboard = () => {
                   {patchUserStatus.isLoading ? (
                     <CircularProgress size={24} />
                   ) : (
-                    <Typography>EDIT?</Typography>
+                    <Typography>EDIT</Typography>
                   )}
                 </Button>
               </form>

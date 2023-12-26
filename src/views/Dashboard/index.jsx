@@ -143,6 +143,7 @@ const Dashboard = () => {
   const [open, setOpen] = React.useState(false);
   const [showResume, setShowResume] = React.useState(false);
   const [showUserInfo, setShowUserInfo] = React.useState(true);
+  const [showItem, setShowItem] =React.useState('UserInfo')
   const showResumeHandler = () => {
     setShowResume((prv) => !prv);
   };
@@ -301,30 +302,31 @@ const Dashboard = () => {
         <Divider />
 
         <Box sx={{ textAlign: "center", p: "10px" }}>
-          <ListItemButton
+          <ListItemButton 
             onClick={() => {
-              showResumeHandler();
-              console.log("show");
+              setShowItem('Resume');
+             
+              
             }}
           >
             <ListItemIcon>
               <ArticleIcon />
             </ListItemIcon>
-            <ListItemText>
-              {showResume ? `Close Resumes` : `Show Resume`}
+            <ListItemText >
+               Resume
             </ListItemText>
           </ListItemButton>
 
-          <ListItemButton
+          <ListItemButton 
             onClick={() => {
-              setShowUserInfo((prv)=>!prv)
+              setShowItem('UserInfo')
             }}
           >
             <ListItemIcon>
               <GroupIcon />
             </ListItemIcon>
             <ListItemText>
-              {showUserInfo ? `Close User Info` : `Show User Info`}
+               User Info
             </ListItemText>
           </ListItemButton>
           
@@ -350,7 +352,7 @@ const Dashboard = () => {
           <Box flex="0 0 60%">
             {isUserlistLoading ? 
               <CircularProgress />
-             : <>{showUserInfo? ( 
+             : <>{showItem==='UserInfo'? ( 
               UsersList?.map((item) => (
                 <Card
                   variant="outlined"
@@ -392,7 +394,7 @@ const Dashboard = () => {
                     </MenuItem>
 
                     <MenuItem onClick={() => handleOpenModal()}>Edit</MenuItem>
-                    <MenuItem onClick={(_id) => deleteitemHandler(_id)}>
+                    <MenuItem onClick={() => deleteitemHandler()}>
                       Delete
                     </MenuItem>
                   </Menu>
@@ -403,7 +405,7 @@ const Dashboard = () => {
           <Box></Box>
         </Box>
 
-        {showResume && <Resume />}
+        {showItem==='Resume' && <Resume />}
       </Main>
 
       <div>

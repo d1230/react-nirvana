@@ -7,8 +7,7 @@ import PrivateLayout from "../views/PrivateLayout";
 import ProtectedLayout from "../views/ProtectedLayout";
 
 function Router() {
-  //const credential = false;////useSelector(state => state.credential.value)
-
+  
   const Services = React.lazy(() => import("../views/Services"));
   const Clients = React.lazy(() => import("../views/Clients"));
   const JobSeekers = React.lazy(() => import("../views/JobSeekers/JobSeekers"));

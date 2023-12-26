@@ -79,8 +79,8 @@ export const userApi = createApi({
         
       }),
       patchUser: builder.mutation({
-        query: (id,data) => ({
-          url: `/api/users/${id}`,
+        query: (data) => ({
+          url: `/api/users/${data.id}`,
           method: "PATCH",
             body: data,
         }),

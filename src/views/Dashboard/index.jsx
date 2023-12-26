@@ -10,7 +10,9 @@ import {
 import React from "react";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../features/slicer/credentialSlicer";
-import { Navigate } from "react-router-dom";
+import { openSnackbar } from "../../features/slicer/snackbarSlicer";
+import ArticleIcon from "@mui/icons-material/Article";
+import GroupIcon from '@mui/icons-material/Group';
 import {
   useGetuserQuery,
   useGetusersQuery,
@@ -26,22 +28,19 @@ import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { useFormik } from "formik";
-
+import { Close as CloseIcon } from "@mui/icons-material";
 import * as Yup from "yup";
+import Resume from "./Resume";
 const drawerWidth = 240;
 const style = {
   position: "absolute",
@@ -102,7 +101,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const nirvanaEnv = "https://nirana-backend.onrender.com";
+ 
   const {
     data: UsersList,
     isError: isUserlistError,
@@ -121,7 +120,7 @@ const Dashboard = () => {
   } = useGetResumesQuery();
   //console.log(resumeInfo);
   const [userid, setUserid] = React.useState("");
-  const [showUserinfo, setShowUserinfo] = React.useState(false);
+
   const {
     data: UserInfo,
     isError: isUserinfoError,
@@ -135,11 +134,15 @@ const Dashboard = () => {
   const logoutHandler = () => {
     dispatch(logOut());
     signoutMutation();
+    dispatch(
+      openSnackbar({ message: "Sucessfully Logged out..", severity: "success" })
+    );
   };
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [showResume, setShowResume] = React.useState(false);
+  const [showUserInfo, setShowUserInfo] = React.useState(true);
   const showResumeHandler = () => {
     setShowResume((prv) => !prv);
   };
@@ -151,49 +154,54 @@ const Dashboard = () => {
     setOpen(false);
   };
 
-  const moreitemHandler = (_id) => {
-    console.log('moreiTemHandler',selectedUser, _id);
-    //setUserid(_id);
-    setShowUserinfo(true);
+  const deleteitemHandler = (e) => {
+    console.log(selectedUser._id);
+    window.alert(`deleted: ${selectedUser._id}` );
+    //if you need delete function 
+    //deleteuserMutation(selectedUser._id);
     handleClose();
+    
   };
-  const deleteitemHandler = (_id) => {
-    console.log(_id);
-    //deleteuserMutation(_id);
-    handleClose();
-    console.log("del", _id);
-  };
-  // const editItemHandler = (_id) => {
-  //   console.log("edit", _id);
-  // };
 
   //open menu
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openMenu = Boolean(anchorEl);
-  
+
   const handleButtonClick = (event, searchId) => {
     console.log(event, searchId);
     setAnchorEl(event.currentTarget);
     if (UsersList?.length > 1)
       setSelectedUser(UsersList.find((user) => user._id === searchId));
     else setSelectedUser(UsersList);
-    if(selectedUser) console.log(selectedUser);
+    if (selectedUser) console.log(selectedUser);
   };
   const handleClose = () => {
-    console.log('handleClose');
+    console.log("handleClose");
     setAnchorEl(null);
   };
-  const editUserHandler = () => {
-    console.log(selectedUser);
-  };
+
   const [openModal, setOpenModal] = React.useState(false);
   const [selectedUser, setSelectedUser] = React.useState("");
-  const handleOpenModal = (searchId) => {
-    console.log(searchId, UsersList);
+  const handleOpenModal = () => {
+    console.log(UsersList);
     //if(UsersList.length>1) setSelectedUser(UsersList.find((user) => user._id === searchId)); else setSelectedUser(UsersList);
     setOpenModal(true);
   };
-  const handleCloseModal = () => setOpenModal(false);
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setAnchorEl(null);
+  };
+
+  const [openMoreModal, setOpenMoreModal] = React.useState(false);
+  const handleOpenMoreModal = () => {
+    console.log(UsersList);
+    //if(UsersList.length>1) setSelectedUser(UsersList.find((user) => user._id === searchId)); else setSelectedUser(UsersList);
+    setOpenMoreModal(true);
+  };
+  const handleCloseMoreModal = () => {
+    setOpenMoreModal(false);
+    setAnchorEl(null);
+  };
 
   const UserFormik = useFormik({
     initialValues: {
@@ -206,28 +214,32 @@ const Dashboard = () => {
       email: Yup.string().required("email is Required"),
     }),
     enableReinitialize: true,
-    onSubmit: async  (values, { resetForm }) => {
-      console.log('patchuser:',values.id,{
+    onSubmit: async (values, { resetForm }) => {
+      console.log("patchuser:", values.id, {
         username: values.username,
         email: values.email,
-      } );
-     
-
+      });
 
       try {
         // Call the patchUser function with the values from the form
-        await patchUser(values.id, {
-          username: values.username,
-          email: values.email,
-        });
-    
+        await patchUser(values);
+
         // Reset the form after successful submission
         resetForm();
         handleCloseModal();
         handleClose();
+        dispatch(
+          openSnackbar({
+            message: "sucessfully editted..",
+            severity: "success",
+          })
+        );
       } catch (error) {
         // Handle any errors from the patchUser function
-        console.error('Error updating user:', error);
+        console.error("Error updating user:", error);
+        dispatch(
+          openSnackbar({ message: "something went wrong..", severity: "error" })
+        );
       }
     },
   });
@@ -287,31 +299,39 @@ const Dashboard = () => {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        {/* <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
+
         <Box sx={{ textAlign: "center", p: "10px" }}>
-          <Button
+          <ListItemButton
             onClick={() => {
               showResumeHandler();
               console.log("show");
             }}
           >
-            <Typography>show resumes</Typography>
-          </Button>
+            <ListItemIcon>
+              <ArticleIcon />
+            </ListItemIcon>
+            <ListItemText>
+              {showResume ? `Close Resumes` : `Show Resume`}
+            </ListItemText>
+          </ListItemButton>
+
+          <ListItemButton
+            onClick={() => {
+              setShowUserInfo((prv)=>!prv)
+            }}
+          >
+            <ListItemIcon>
+              <GroupIcon />
+            </ListItemIcon>
+            <ListItemText>
+              {showUserInfo ? `Close User Info` : `Show User Info`}
+            </ListItemText>
+          </ListItemButton>
+          
         </Box>
 
         <Divider />
-        <List>
+        {/* <List>
           {["All mail", "Trash", "Spam"].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
@@ -322,16 +342,16 @@ const Dashboard = () => {
               </ListItemButton>
             </ListItem>
           ))}
-        </List>
+        </List> */}
       </Drawer>
       <Main open={open}>
         <DrawerHeader />
         <Box sx={{ display: "flex" }}>
           <Box flex="0 0 60%">
-            {isUserlistLoading ? (
+            {isUserlistLoading ? 
               <CircularProgress />
-            ) : (
-              UsersList?.map((item, index) => (
+             : <>{showUserInfo? ( 
+              UsersList?.map((item) => (
                 <Card
                   variant="outlined"
                   key={item._id}
@@ -358,107 +378,148 @@ const Dashboard = () => {
                   </Button>
                   <Menu
                     id={`basic-menu-${item._id}`}
-                    
-                    open={item._id===selectedUser._id}
+                    // open={item._id===selectedUser._id}
+                    anchorEl={anchorEl}
+                    open={openMenu}
                     onClose={handleClose}
                     keepMounted
                     // MenuListProps={{
                     //   "aria-labelledby": "basic-button",
                     // }}
                   >
-                    <MenuItem onClick={() => moreitemHandler(item._id)}>
+                    <MenuItem onClick={() => handleOpenMoreModal()}>
                       More
                     </MenuItem>
 
-                    <MenuItem onClick={() => handleOpenModal(item._id)}>
-                      Edit
-                    </MenuItem>
-                    <MenuItem onClick={() => deleteitemHandler(item._id)}>
+                    <MenuItem onClick={() => handleOpenModal()}>Edit</MenuItem>
+                    <MenuItem onClick={(_id) => deleteitemHandler(_id)}>
                       Delete
                     </MenuItem>
                   </Menu>
-
-                  <div>
-                    {/* <Button onClick={handleOpenModal}>Open modal</Button> */}
-                    <Modal
-                      open={openModal}
-                      onClose={handleCloseModal}
-                      aria-labelledby="modal-modal-title"
-                      aria-describedby="modal-modal-description"
-                    >
-                      <Box
-                        sx={style}
-                        display="flex"
-                        alignItems="center"
-                        gap={2}
-                        flexDirection="column"
-                      >
-
-
-                        {selectedUser && <form
-                          onSubmit={UserFormik.handleSubmit}
-                          style={{
-                            width: "200px",
-                            textAlign: "center",
-                            border: "solid 1px #bdbdbd ",
-                            padding: "10px",
-                          }}
-                        >
-                          <Typography variant="body3">form</Typography>
-                          {selectedUser?._id}
-                          <TextField
-                            fullWidth
-                            id="username"
-                            name="username"
-                            label="username *"
-                            value={UserFormik.values.username}
-                            onChange={UserFormik.handleChange}
-                            error={
-                              UserFormik.touched.username &&
-                              Boolean(UserFormik.errors.username)
-                            }
-                            helperText={
-                              UserFormik.touched.username &&
-                              UserFormik.errors.username
-                            }
-                            size="small"
-                            margin="dense"
-                            variant="outlined"
-                          ></TextField>
-                          <TextField
-                            fullWidth
-                            id="email"
-                            name="email"
-                            label="email *"
-                            value={UserFormik.values.email}
-                            onChange={UserFormik.handleChange}
-                            error={
-                              UserFormik.touched.email &&
-                              Boolean(UserFormik.errors.email)
-                            }
-                            helperText={
-                              UserFormik.touched.email &&
-                              UserFormik.errors.email
-                            }
-                            size="small"
-                            margin="dense"
-                            variant="outlined"
-                          ></TextField>
-                          <Button type="submit" disabled={patchUserStatus.isLoading}> {patchUserStatus.isLoading? <CircularProgress size={24} /> : <Typography>EDIT?</Typography>}</Button>
-                        </form>}
-                      </Box>
-                    </Modal>
-                  </div>
                 </Card>
               ))
+            ):(<></>)}</>}
+          </Box>
+          <Box></Box>
+        </Box>
+
+        {showResume && <Resume />}
+      </Main>
+
+      <div>
+        <Modal
+          open={openModal}
+          onClose={handleCloseModal}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box
+            sx={style}
+            display="flex"
+            alignItems="center"
+            gap={2}
+            flexDirection="column"
+          >
+            <IconButton
+              edge="end"
+              color="inherit"
+              aria-label="close"
+              onClick={handleCloseModal}
+              sx={{ position: "absolute", top: 0, right: 10, zIndex: 1 }}
+            >
+              <CloseIcon />
+            </IconButton>
+            {selectedUser && (
+              <form
+                onSubmit={UserFormik.handleSubmit}
+                style={{
+                  width: "200px",
+                  textAlign: "center",
+                  border: "solid 1px #bdbdbd ",
+                  padding: "10px",
+                }}
+              >
+                <Typography variant="body3">form</Typography>
+                {selectedUser?._id}
+                <TextField
+                  fullWidth
+                  id="username"
+                  name="username"
+                  label="username *"
+                  value={UserFormik.values.username}
+                  onChange={UserFormik.handleChange}
+                  error={
+                    UserFormik.touched.username &&
+                    Boolean(UserFormik.errors.username)
+                  }
+                  helperText={
+                    UserFormik.touched.username && UserFormik.errors.username
+                  }
+                  size="small"
+                  margin="dense"
+                  variant="outlined"
+                ></TextField>
+                <TextField
+                  fullWidth
+                  id="email"
+                  name="email"
+                  label="email *"
+                  value={UserFormik.values.email}
+                  onChange={UserFormik.handleChange}
+                  error={
+                    UserFormik.touched.email && Boolean(UserFormik.errors.email)
+                  }
+                  helperText={
+                    UserFormik.touched.email && UserFormik.errors.email
+                  }
+                  size="small"
+                  margin="dense"
+                  variant="outlined"
+                ></TextField>
+                <Button type="submit" disabled={patchUserStatus.isLoading}>
+                  {" "}
+                  {patchUserStatus.isLoading ? (
+                    <CircularProgress size={24} />
+                  ) : (
+                    <Typography>EDIT?</Typography>
+                  )}
+                </Button>
+              </form>
             )}
           </Box>
-          <Box>
-            {showUserinfo && (isUserinfoLoading || isUserinfoFetching) ? (
+        </Modal>
+      </div>
+
+      <div>
+        {/* <Button onClick={handleOpenModal}>Open modal</Button> */}
+        <Modal
+          open={openMoreModal}
+          onClose={handleCloseMoreModal}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box
+            sx={style}
+            display="flex"
+            alignItems="center"
+            gap={2}
+            flexDirection="column"
+          >
+            <IconButton
+              edge="end"
+              color="inherit"
+              aria-label="close"
+              onClick={handleCloseMoreModal}
+              sx={{ position: "absolute", top: 5, right: 5, zIndex: 1 }}
+            >
+              <CloseIcon />
+            </IconButton>
+
+            {isUserinfoLoading || isUserinfoFetching ? (
               <>
                 <CircularProgress />
               </>
-            ) : selectedUser && showUserinfo && !isUserinfoFetching ? (
+            ) : selectedUser && !isUserinfoFetching ? (
               <>
                 <Typography variant="body2" component="div">
                   Info
@@ -483,28 +544,8 @@ const Dashboard = () => {
               <></>
             )}
           </Box>
-        </Box>
-
-        {showResume && (
-          <Box>
-            {resumeInfo?.map((item, index) => (
-              <ul key={item._id}>
-                {index}
-                <li>{item.email}</li>
-                <li>{item.name}</li>{" "}
-                <li>
-                  <iframe
-                    title={`Resume_${item._id}`}
-                    style={{ width: "100%", height: "800px" }} // adjust the width and height as needed
-                    src={nirvanaEnv + item.resumeFilePath}
-                    frameBorder="0"
-                  />
-                </li>
-              </ul>
-            ))}
-          </Box>
-        )}
-      </Main>
+        </Modal>
+      </div>
     </Box>
   );
 

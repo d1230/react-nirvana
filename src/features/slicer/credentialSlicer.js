@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Navigate } from "react-router-dom";
 import { userApi } from "../../services/useApi";
 //REDUCER
 export const credentialSlice = createSlice({

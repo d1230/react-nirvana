@@ -4,15 +4,16 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // or another storage method
 import { userApi } from "../services/useApi";
 import { setupListeners } from "@reduxjs/toolkit/query";
-
+import snackbarReducer from '../features/slicer/snackbarSlicer';
 const persistConfig = {
   key: "root",
   storage,
-  whitelist:['credential']
+  whitelist:['credential',]
 };
 const rootReducer = combineReducers({
   [userApi.reducerPath]: userApi.reducer,
   credential: credentialReducer,
+  snackbar: snackbarReducer,
 });
 
 const persistedReducer = persistReducer(

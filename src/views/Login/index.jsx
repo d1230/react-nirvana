@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { update, logOut } from "../../features/slicer/credentialSlicer";
 import { useNavigate } from "react-router-dom";
 import { useSigninMutation } from "../../services/useApi";
+import { openSnackbar } from "../../features/slicer/snackbarSlicer";
 const Login = () => {
   
   const credential = useSelector((state) => state.credential.value);
@@ -21,13 +22,21 @@ const Login = () => {
       id: Yup.string().required("ID is Required"),//.email('Not proper email format'),
       password: Yup.string().required("Password is Required"),
     }),
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: async (values, { resetForm }) => {
       console.log(values);
       //mock credential check
-      signinMutation({
+      try {
+        await signinMutation({
         "username": "admin1",
         "password": "test@123"
     })
+    dispatch(openSnackbar({'message':'Sucessfully Logged in..','severity':'success'}));
+
+   } catch  (error) {
+    console.error('Error updating user:', error);
+        dispatch(openSnackbar({'message':`error:${error}`,'severity':'error'}));
+   }
+      
       // if (values.id === "1" && values.password === "1") {
       //   //dispatch(update("admin"));
       // }

@@ -2,8 +2,12 @@ import {
   AppBar,
   Box,
   Button,
+  Divider,
+  Drawer,
   Grid,
+  IconButton,
   InputLabel,
+  List,
   Menu,
   MenuItem,
   Select,
@@ -12,9 +16,19 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { StyledAppbar, StyledNavLink, styledMenu } from "./Header.style";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React from "react";
+import MenuIcon from "@mui/icons-material/Menu";
 //import moment from 'moment';
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MailIcon from "@mui/icons-material/Mail";
+import { styled, useTheme } from "@mui/material/styles";
 
 const LinkItems = [
   // { to: "/", name: "Home" },
@@ -51,8 +65,19 @@ const LinkItems = [
   { to: "/contact", type: "link", name: "Contact" },
   { to: "/login", type: "link", name: "Login" },
 ];
+const drawerWidth = 240;
 
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+  justifyContent: "flex-start",
+}));
 const Header = () => {
+  const theme = useTheme();
+  const navigate = useNavigate();
   //check if its small screen
   const isSmallScreen = useMediaQuery("(max-width:850px)");
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -68,12 +93,20 @@ const Header = () => {
     setAnchorEl(null);
     console.log("Mouse out");
   };
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
 
+  const handleDrawerOpen = () => {
+    setDrawerOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setDrawerOpen(false);
+  };
   return (
     <>
       {isSmallScreen ? (
         <AppBar>
-          <Toolbar>
+          <Toolbar sx={{ "justify-content": "space-between" }}>
             <Box>
               <img
                 alt="Nirvana Enterprises"
@@ -83,7 +116,72 @@ const Header = () => {
                 height="30"
               ></img>
             </Box>
+
+            {/* {LinkItems.map((item, index) => (
+            <MenuItem key={index} onClick={handleClose} sx={{ width: 'auto' }}>
+              <StyledNavLink to={item.to} className="linkClass">
+                {item.name}
+              </StyledNavLink>
+            </MenuItem>
+          ))} */}
+
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="end"
+              onClick={handleDrawerOpen}
+              sx={{ ...(drawerOpen && { display: "none" }) }}
+            >
+              <MenuIcon />
+            </IconButton>
           </Toolbar>
+
+          <Drawer
+            sx={{
+              width: drawerWidth,
+              flexShrink: 0,
+              "& .MuiDrawer-paper": {
+                width: drawerWidth,
+              },
+            }}
+            variant="persistent"
+            anchor="right"
+            open={drawerOpen}
+          >
+            <DrawerHeader>
+              <IconButton onClick={handleDrawerClose}>
+                {theme.direction === "rtl" ? (
+                  <ChevronLeftIcon />
+                ) : (
+                  <ChevronRightIcon />
+                )}
+              </IconButton>
+            </DrawerHeader>
+            <Divider />
+
+            {/* {LinkItems.map((item, index) => (
+            <MenuItem key={index} onClick={handleClose} sx={{ width: 'auto' }}>
+              <StyledNavLink to={item.to} className="linkClass">
+                {item.name}
+              </StyledNavLink>
+            </MenuItem>
+          ))} */}
+
+            <List>
+              {LinkItems.map((item, index) => (
+                <ListItem key={item.name} disablePadding>
+                  <ListItemButton onClick = {()=>navigate(item.to)}>
+                    {/* <ListItemIcon>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon> */}
+                    <ListItemText primary={item.name} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+            <button onClick = {()=>navigate('/services')}>navi to</button>
+            <Divider />
+          </Drawer>
         </AppBar>
       ) : (
         <StyledAppbar className="header" container>
@@ -98,7 +196,7 @@ const Header = () => {
                     aria-controls={anchorEl ? `basic-menu-${index}` : undefined}
                     aria-haspopup="true"
                     aria-expanded={anchorEl ? "true" : undefined}
-                    style={{color:'white',textDecoration:'none'}}
+                    style={{ color: "white", textDecoration: "none" }}
                     onMouseOver={handleClick}
                   >
                     {label.name}
@@ -113,7 +211,6 @@ const Header = () => {
                     open={Boolean(
                       anchorEl && anchorEl.id === `basic-button-${index}`
                     )}
-                    
                     onClose={handleClose}
                     onMouseLeave={handleClose}
                     MenuListProps={{ onMouseLeave: handleClose }}

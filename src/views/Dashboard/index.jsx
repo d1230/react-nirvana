@@ -1,46 +1,47 @@
+import React, { useCallback } from "react";
 import {
   Button,
   CircularProgress,
   Menu,
   MenuItem,
   Modal,
-  Paper,
   TextField,
+  Typography,
+  Box,
+  Drawer,
+  CssBaseline,
+  AppBar as MuiAppBar,
+  Toolbar,
+  IconButton,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
 } from "@mui/material";
-import React from "react";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../features/slicer/credentialSlicer";
 import { openSnackbar } from "../../features/slicer/snackbarSlicer";
 import ArticleIcon from "@mui/icons-material/Article";
-import GroupIcon from '@mui/icons-material/Group';
+import GroupIcon from "@mui/icons-material/Group";
 import {
   useGetuserQuery,
   useGetusersQuery,
   useSignoutMutation,
   useDeleteuserMutation,
-  useGetResumesQuery,
   usePatchUserMutation,
 } from "../../services/useApi";
 import Card from "@mui/material/Card";
 import { styled, useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
-import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+
 import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import { useFormik } from "formik";
-import { Close as CloseIcon } from "@mui/icons-material";
+import CloseIcon from "@mui/icons-material/Close";
 import * as Yup from "yup";
 import Resume from "./Resume";
+import { useFormik } from "formik";
+
 const drawerWidth = 240;
 const style = {
   position: "absolute",
@@ -101,7 +102,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 const Dashboard = () => {
   const dispatch = useDispatch();
- 
+
   const {
     data: UsersList,
     isError: isUserlistError,
@@ -111,14 +112,14 @@ const Dashboard = () => {
   const [deleteuserMutation, deleteuserMutationStatus] =
     useDeleteuserMutation();
   const [patchUser, patchUserStatus] = usePatchUserMutation();
-  //console.log(patchUserStatus.isLoading);
-  const {
-    data: resumeInfo,
-    isError: isResumeInfoError,
-    isLoading: isResumeInfoLoading,
-    isFetching: isResumeInfoFetching,
-  } = useGetResumesQuery();
-  //console.log(resumeInfo);
+
+  // const {
+  //   data: resumeInfo,
+  //   isError: isResumeInfoError,
+  //   isLoading: isResumeInfoLoading,
+  //   isFetching: isResumeInfoFetching,
+  // } = useGetResumesQuery();
+
   const [userid, setUserid] = React.useState("");
 
   const {
@@ -128,9 +129,6 @@ const Dashboard = () => {
     isFetching: isUserinfoFetching,
   } = useGetuserQuery(userid);
 
-  //console.log(UserInfo?.length);
-  //console.log("isUserinfoFetching", isUserinfoFetching);
-  //React.useEffect(() => {}, []);
   const logoutHandler = () => {
     dispatch(logOut());
     signoutMutation();
@@ -141,27 +139,21 @@ const Dashboard = () => {
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [showResume, setShowResume] = React.useState(false);
-  const [showUserInfo, setShowUserInfo] = React.useState(true);
-  const [showItem, setShowItem] =React.useState('UserInfo')
-  const showResumeHandler = () => {
-    setShowResume((prv) => !prv);
-  };
-  const handleDrawerOpen = () => {
+  const [showItem, setShowItem] = React.useState("UserInfo");
+
+  const handleDrawerOpen = useCallback(() => {
     setOpen(true);
-  };
+  }, []);
 
-  const handleDrawerClose = () => {
+  const handleDrawerClose = useCallback(() => {
     setOpen(false);
-  };
+  }, []);
 
-  const deleteitemHandler = (e) => {
-    console.log(selectedUser._id);
-    window.alert(`deleted: ${selectedUser._id}` );
-    //if you need delete function 
-    //deleteuserMutation(selectedUser._id);
+  const deleteitemHandler = () => {
+    window.alert(`deleted: ${selectedUser._id}`);
+    //if you need delete function
+    deleteuserMutation(selectedUser._id);
     handleClose();
-    
   };
 
   //open menu
@@ -169,23 +161,18 @@ const Dashboard = () => {
   const openMenu = Boolean(anchorEl);
 
   const handleButtonClick = (event, searchId) => {
-    console.log(event, searchId);
     setAnchorEl(event.currentTarget);
     if (UsersList?.length > 1)
       setSelectedUser(UsersList.find((user) => user._id === searchId));
     else setSelectedUser(UsersList);
-    if (selectedUser) console.log(selectedUser);
   };
   const handleClose = () => {
-    console.log("handleClose");
     setAnchorEl(null);
   };
 
   const [openModal, setOpenModal] = React.useState(false);
   const [selectedUser, setSelectedUser] = React.useState("");
   const handleOpenModal = () => {
-    console.log(UsersList);
-    //if(UsersList.length>1) setSelectedUser(UsersList.find((user) => user._id === searchId)); else setSelectedUser(UsersList);
     setOpenModal(true);
   };
   const handleCloseModal = () => {
@@ -195,8 +182,6 @@ const Dashboard = () => {
 
   const [openMoreModal, setOpenMoreModal] = React.useState(false);
   const handleOpenMoreModal = () => {
-    console.log(UsersList);
-    //if(UsersList.length>1) setSelectedUser(UsersList.find((user) => user._id === searchId)); else setSelectedUser(UsersList);
     setOpenMoreModal(true);
   };
   const handleCloseMoreModal = () => {
@@ -211,9 +196,27 @@ const Dashboard = () => {
       id: selectedUser._id,
     },
     validationSchema: Yup.object({
-      username: Yup.string().required("username is Required"), //.email('Not proper email format'),
+      username: Yup.string().required("username is Required"),
       email: Yup.string().required("email is Required"),
-    }),
+    }).test(
+      "New username and email must be different from previous values",
+      function (values) {
+        const { username: newUsername, email: newEmail } = values;
+        const { username: oldUsername, email: oldEmail } = selectedUser;
+        console.log(values, selectedUser);
+        // Check if the new values are the same as the old values
+        if (newUsername === oldUsername && newEmail === oldEmail) {
+          console.log("no same id/email;");
+          return this.createError({
+            path: "username",
+            message:
+              "New username and email must be different from previous values",
+          });
+        }
+
+        return true;
+      }
+    ),
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
       console.log("patchuser:", values.id, {
@@ -302,34 +305,28 @@ const Dashboard = () => {
         <Divider />
 
         <Box sx={{ textAlign: "center", p: "10px" }}>
-          <ListItemButton 
+          <ListItemButton
+            disabled={showItem == "UserInfo"}
             onClick={() => {
-              setShowItem('Resume');
-             
-              
-            }}
-          >
-            <ListItemIcon>
-              <ArticleIcon />
-            </ListItemIcon>
-            <ListItemText >
-               Resume
-            </ListItemText>
-          </ListItemButton>
-
-          <ListItemButton 
-            onClick={() => {
-              setShowItem('UserInfo')
+              setShowItem("UserInfo");
             }}
           >
             <ListItemIcon>
               <GroupIcon />
             </ListItemIcon>
-            <ListItemText>
-               User Info
-            </ListItemText>
+            <ListItemText>User Info</ListItemText>
           </ListItemButton>
-          
+          <ListItemButton
+            disabled={showItem == "Resume"}
+            onClick={() => {
+              setShowItem("Resume");
+            }}
+          >
+            <ListItemIcon>
+              <ArticleIcon />
+            </ListItemIcon>
+            <ListItemText>Resume</ListItemText>
+          </ListItemButton>
         </Box>
 
         <Divider />
@@ -350,62 +347,70 @@ const Dashboard = () => {
         <DrawerHeader />
         <Box sx={{ display: "flex" }}>
           <Box flex="0 0 60%">
-            {isUserlistLoading ? 
+            {isUserlistLoading ? (
               <CircularProgress />
-             : <>{showItem==='UserInfo'? ( 
-              UsersList?.map((item) => (
-                <Card
-                  variant="outlined"
-                  key={item._id}
-                  sx={{ padding: "10px", width: "50vh" }}
-                >
-                  <Typography variant="h4" component="div">
-                    {item.username}
-                  </Typography>
-                  <Typography variant="body2" component="div">
-                    {item.email}
-                  </Typography>
-                  <Typography variant="body2" component="div">
-                    {item._id}
-                  </Typography>
+            ) : (
+              <>
+                {showItem === "UserInfo" ? (
+                  UsersList?.map((item) => (
+                    <Card
+                      variant="outlined"
+                      key={item._id}
+                      sx={{ padding: "10px", width: "50vh" }}
+                    >
+                      <Typography variant="h4" component="div">
+                        {item.username}
+                      </Typography>
+                      <Typography variant="body2" component="div">
+                        {item.email}
+                      </Typography>
+                      <Typography variant="body2" component="div">
+                        {item._id}
+                      </Typography>
 
-                  <Button
-                    aria-label="more"
-                    aria-controls={`basic-menu-${item._id}`}
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                    onClick={(event) => handleButtonClick(event, item._id)}
-                  >
-                    Option
-                  </Button>
-                  <Menu
-                    id={`basic-menu-${item._id}`}
-                    // open={item._id===selectedUser._id}
-                    anchorEl={anchorEl}
-                    open={openMenu}
-                    onClose={handleClose}
-                    keepMounted
-                    // MenuListProps={{
-                    //   "aria-labelledby": "basic-button",
-                    // }}
-                  >
-                    <MenuItem onClick={() => handleOpenMoreModal()}>
-                      More
-                    </MenuItem>
+                      <Button
+                        aria-label="more"
+                        aria-controls={`basic-menu-${item._id}`}
+                        aria-haspopup="true"
+                        aria-expanded={open ? "true" : undefined}
+                        onClick={(event) => handleButtonClick(event, item._id)}
+                      >
+                        Option
+                      </Button>
+                      <Menu
+                        id={`basic-menu-${item._id}`}
+                        // open={item._id===selectedUser._id}
+                        anchorEl={anchorEl}
+                        open={openMenu}
+                        onClose={handleClose}
+                        keepMounted
+                        // MenuListProps={{
+                        //   "aria-labelledby": "basic-button",
+                        // }}
+                      >
+                        <MenuItem onClick={() => handleOpenMoreModal()}>
+                          More
+                        </MenuItem>
 
-                    <MenuItem onClick={() => handleOpenModal()}>Edit</MenuItem>
-                    <MenuItem onClick={() => deleteitemHandler()}>
-                      Delete
-                    </MenuItem>
-                  </Menu>
-                </Card>
-              ))
-            ):(<></>)}</>}
+                        <MenuItem onClick={() => handleOpenModal()}>
+                          Edit
+                        </MenuItem>
+                        <MenuItem onClick={() => deleteitemHandler()}>
+                          Delete
+                        </MenuItem>
+                      </Menu>
+                    </Card>
+                  ))
+                ) : (
+                  <></>
+                )}
+              </>
+            )}
           </Box>
           <Box></Box>
         </Box>
 
-        {showItem==='Resume' && <Resume />}
+        {showItem === "Resume" && <Resume />}
       </Main>
 
       <div>
@@ -442,7 +447,7 @@ const Dashboard = () => {
                 }}
               >
                 <Typography variant="body3">form</Typography>
-                {selectedUser?._id}
+                {/* {selectedUser?._id} */}
                 <TextField
                   fullWidth
                   id="username"

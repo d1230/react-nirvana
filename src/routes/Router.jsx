@@ -2,7 +2,6 @@ import {  useRoutes } from "react-router-dom";
 import { Layout } from "../components";
 import Home from "../views/Home";
 import React from "react";
-import { useSelector } from "react-redux";
 import PrivateLayout from "../views/PrivateLayout";
 import ProtectedLayout from "../views/ProtectedLayout";
 

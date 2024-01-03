@@ -1,21 +1,17 @@
 import {
   AppBar,
   Box,
-  Button,
   Divider,
   Drawer,
   Grid,
   IconButton,
-  InputLabel,
   List,
   Menu,
   MenuItem,
-  Select,
   Toolbar,
-  Typography,
   useMediaQuery,
 } from "@mui/material";
-import { StyledAppbar, StyledNavLink, styledMenu } from "./Header.style";
+import { StyledAppbar, StyledNavLink } from "./Header.style";
 import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -24,10 +20,9 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
+
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+
 import { styled, useTheme } from "@mui/material/styles";
 
 const LinkItems = [
@@ -117,13 +112,7 @@ const Header = () => {
               ></img>
             </Box>
 
-            {/* {LinkItems.map((item, index) => (
-            <MenuItem key={index} onClick={handleClose} sx={{ width: 'auto' }}>
-              <StyledNavLink to={item.to} className="linkClass">
-                {item.name}
-              </StyledNavLink>
-            </MenuItem>
-          ))} */}
+
 
             <IconButton
               color="inherit"
@@ -159,27 +148,19 @@ const Header = () => {
             </DrawerHeader>
             <Divider />
 
-            {/* {LinkItems.map((item, index) => (
-            <MenuItem key={index} onClick={handleClose} sx={{ width: 'auto' }}>
-              <StyledNavLink to={item.to} className="linkClass">
-                {item.name}
-              </StyledNavLink>
-            </MenuItem>
-          ))} */}
+
 
             <List>
-              {LinkItems.map((item, index) => (
+              {LinkItems.map((item) => (
                 <ListItem key={item.name} disablePadding>
                   <ListItemButton onClick = {()=>navigate(item.to)}>
-                    {/* <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon> */}
+ 
                     <ListItemText primary={item.name} />
                   </ListItemButton>
                 </ListItem>
               ))}
             </List>
-            <button onClick = {()=>navigate('/services')}>navi to</button>
+         
             <Divider />
           </Drawer>
         </AppBar>

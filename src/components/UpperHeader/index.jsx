@@ -10,7 +10,7 @@ const UpperHeader = () => {
   );
   useEffect(() => {
     let intervalID = setInterval(() => {
-      console.log("hello");
+      //console.log("hello");
       setClock(
         moment().tz("America/New_York").format("MMMM Do YYYY, h:mm a z")
       );

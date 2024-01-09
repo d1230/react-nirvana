@@ -355,7 +355,7 @@ const Header = () => {
         </AppBar>
       ) : (   //this is for bigger screen
         <StyledAppbar className="header" container position="static">
-          <Toolbar>  <MenuItemComponent /></Toolbar>
+          <Toolbar  style={{'min-height':'24px'}}>  <MenuItemComponent /></Toolbar>
         
           {/* {LinkItems.map((label, index) => (
             <Grid sx={{ color: "white", m: 1 }} item key={index}>

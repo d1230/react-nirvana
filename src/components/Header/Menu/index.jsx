@@ -1,6 +1,7 @@
 import { useTheme } from "@emotion/react";
 import { Button, Menu, MenuItem } from "@mui/material";
 import React, { useCallback, useRef, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const MENU_ITEMS = [
@@ -68,11 +69,32 @@ export const MENU_ITEMS = [
   },
 ];
 
-const DropdownMenuItem = ({ menuItem, menuShowingDropdown, setMenuShowingDropdown }) => {
+const DropdownMenuItem = ({
+  menuItem,
+  menuShowingDropdown,
+  setMenuShowingDropdown,
+}) => {
   const { title, subMenus } = menuItem;
   const buttonRef = useRef(null);
   const theme = useTheme();
   const navigate = useNavigate();
+
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+  const [isHover, setIsHover] = useState(false);
+  useEffect(() => {
+    console.log("isSubmenuOpen,isHover", isSubmenuOpen, isHover);
+    //setTimeout(() => {
+      if ((isHover || isSubmenuOpen) && subMenus) {
+        console.log( title, subMenus,"open");
+        showSubMenu();
+      } else {
+        console.log( title, subMenus,"close");
+        closeSubMenu();
+      }
+    //}, 300);
+  }, [isSubmenuOpen, isHover]);
+   useEffect(()=>{console.log('buttonRef',buttonRef.current)},buttonRef)
+  useEffect(()=>{console.log(menuItem);});
 
   const showSubMenu = useCallback(() => {
     setMenuShowingDropdown(title);
@@ -89,11 +111,19 @@ const DropdownMenuItem = ({ menuItem, menuShowingDropdown, setMenuShowingDropdow
         closeSubMenu(); // Close the submenu after clicking
       }}
       key={subMenuItem.title}
+      onMouseLeave={() => {
+        //console.log(subMenuItem,"leave");
+        setIsSubmenuOpen(false);
+      }}
+      onMouseEnter={() => {
+        //console.log(subMenuItem,"enter");
+        setIsSubmenuOpen(true);
+      }}
       sx={{
         color: "#ffffff",
-        backgroundColor: '#00296b',
+        backgroundColor: "#00296b",
         "&:hover": {
-          backgroundColor: '#00296b', // Keep the same background color on hover
+          backgroundColor: "#00296b", // Keep the same background color on hover
           color: "grey",
         },
       }}
@@ -107,48 +137,57 @@ const DropdownMenuItem = ({ menuItem, menuShowingDropdown, setMenuShowingDropdow
       <Button
         id={`menuItem-${title}`}
         key={`menuItem-${title}`}
-        sx={{  color: "#ffffff", backgroundColor:'#00296b' , "&:hover": {
-          backgroundColor: '#00296b', // Keep the same background color on hover
-          color: "grey",
+        sx={{
+          color: "#ffffff",
+          backgroundColor: "#00296b",
+          "&:hover": {
+            backgroundColor: "#00296b", // Keep the same background color on hover
+            color: "grey",
+            boxShadow: "none", // Remove shadow
+            border: "none", // Remove border
+            borderRadius: 0, // Remove border radius
+          },
+
           boxShadow: "none", // Remove shadow
-    border: "none", // Remove border
-    borderRadius: 0, // Remove border radius
-        },
-      
-
-
-        boxShadow: "none", // Remove shadow
-    border: "none", // Remove border
-    borderRadius: 0, // Remove border radius
-      
-      
-      }}
+          border: "none", // Remove border
+          borderRadius: 0, // Remove border radius
+        }}
         ref={buttonRef}
         onClick={() => {
           if (!subMenus) {
             console.log("first level menu click");
             navigate(menuItem.pathname);
           } else {
-            showSubMenu();
+            // showSubMenu();
           }
         }}
         onMouseLeave={() => {
-          setTimeout(() => {
-            closeSubMenu();
-          }, 300);
+          setIsHover(false);
+          // setTimeout(() => {
+          //   closeSubMenu();
+          // }, 300);
         }}
         onMouseEnter={() => {
+          console.log('enter');
+          setIsHover(true);
           if (subMenus) {
             showSubMenu();
           }
         }}
       >
-        {title} {subMenus ? "↓" : ""}
+        {title} 
       </Button>
       <Menu
+      
         anchorEl={buttonRef.current}
         open={menuShowingDropdown === title}
         onClose={closeSubMenu}
+        onMouseEnter={() => {
+          setIsSubmenuOpen(true);
+
+          showSubMenu();
+        }}
+       
         
       >
         {subMenusNodes}
@@ -172,7 +211,7 @@ const MenuItemComponent = () => {
           menuItem={menuItem}
           menuShowingDropdown={menuShowingDropdown}
           setMenuShowingDropdown={handleMenuShowingDropdownChange}
-          sx={{color:'white'}}
+          sx={{ color: "white" }}
         />
       ))}
     </>

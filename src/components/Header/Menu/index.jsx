@@ -1,9 +1,9 @@
 import { useTheme } from "@emotion/react";
-import { Button, Menu, MenuItem } from "@mui/material";
+import { Button, Icon, Menu, MenuItem } from "@mui/material";
 import React, { useCallback, useRef, useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 export const MENU_ITEMS = [
   {
     title: "About",
@@ -147,6 +147,7 @@ const DropdownMenuItem = ({
             border: "none", // Remove border
             borderRadius: 0, // Remove border radius
           },
+          // "& .MuiPaper-root":{backgroundColor: "#00296b"},
 
           boxShadow: "none", // Remove shadow
           border: "none", // Remove border
@@ -168,17 +169,18 @@ const DropdownMenuItem = ({
           // }, 300);
         }}
         onMouseEnter={() => {
-          console.log('enter');
+          console.log(title,' to enter');
           setIsHover(true);
           if (subMenus) {
             showSubMenu();
           }
         }}
+        className='coco22'
       >
-        {title} 
+        {title} {subMenus ?  <ExpandMoreRoundedIcon /> : ""}
       </Button>
       <Menu
-      
+     sx={{"& .MuiPaper-root":{backgroundColor: "#00296b"},}}
         anchorEl={buttonRef.current}
         open={menuShowingDropdown === title}
         onClose={closeSubMenu}

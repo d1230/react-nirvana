@@ -1,33 +1,24 @@
 import {
   AppBar,
   Box,
-  Button,
   Divider,
   Drawer,
-  Grid,
   IconButton,
   List,
-  Menu,
-  MenuItem,
   Toolbar,
   useMediaQuery,
 } from "@mui/material";
-import { StyledAppbar, StyledNavLink } from "./Header.style";
-import { Link, useNavigate } from "react-router-dom";
-import React, { useCallback, useRef, useState } from "react";
+import { StyledAppbar } from "./Header.style";
+import { useNavigate } from "react-router-dom";
+import React from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 //import moment from 'moment';
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-
 import ListItemText from "@mui/material/ListItemText";
-
 import { styled, useTheme } from "@mui/material/styles";
-import DropdownMenuItem from "./Menu";
-import menuItems from "./Menu";
-import MenuComponent from "./Menu";
 import MenuItemComponent from "./Menu";
 
 const LinkItems = [
@@ -67,7 +58,6 @@ const LinkItems = [
 ];
 const drawerWidth = 240;
 
-
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -77,206 +67,18 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-start",
 }));
 
-
-
-
-//newDropdown
-// export const MENU_ITEMS = [
-//   {
-//     title: "About",
-//     pathname: "/about"
-//   },
-//   {
-//     title: "Services",
-//     pathname: "/services",
-//     subMenus: [
-//       {
-//         title: "Services",
-//         pathname: "/services"
-//       },
-//       {
-//         title: "IT Staffing",
-//         pathname: "/services"
-//       }
-//     ]
-//   },
-//   {
-//     title: "Jobseekers",
-//     pathname: "/jobseekers",
-//     subMenus: [
-//       {
-//         title: "Overview",
-//         pathname: "/jobseekers"
-//       },
-//       {
-//         title: "Browse IT Jobs",
-//         pathname: "/jobseekers"
-//       }
-//     ]
-//   },
-//   {
-//     title: "Clients",
-//     pathname: "/clients",
-//     subMenus: [
-//       {
-//         title: "Overview",
-//         pathname: "/clients"
-//       },
-//       {
-//         title: "Industry Expertise",
-//         pathname: "/clients"
-//       }, {
-//         title: "Client Q&A",
-//         pathname: "/clients"
-//       }, {
-//         title: "IT Roles",
-//         pathname: "/clients"
-//       },
-//     ]
-//   },
-//   {
-//     title: "Contact",
-//     pathname: "/contact"
-//   },
-//   {
-//     title: "Login",
-//     pathname: "/login"
-//   },
-// ];
-
-
-// const DropdownMenuItem = ({
-//   menuItem,
-//   menuShowingDropdown,
-//   setMenuShowingDropdown,
-// }) => {
-//   const { title, subMenus } = menuItem;
-//   const buttonRef = useRef(null);
-
-//   const showSubMenu = useCallback(() => {
-   
-//     setMenuShowingDropdown(menuItem.title,setMenuShowingDropdown);
-//   }, [menuItem.title, setMenuShowingDropdown]);
-
-//   const closeSubMenu = useCallback(() => {
-   
-//     setMenuShowingDropdown("");
-//   }, [setMenuShowingDropdown]);
-
-//   const subMenusNodes = subMenus?.map((subMenuItem) => {
-//     return (
-//       <MenuItem
-//         onClick={() => {
-//           console.log("second level menu tiem click");
-//         }}
-//         key={subMenuItem.title}
-//       >
-//         {subMenuItem.title}
-//       </MenuItem>
-//     );
-//   });
-
-//   const theme = useTheme();
-
-//   return (
-//     <>
-//       <Button
-//         id={`menuItem-${title}`}
-//         // higher zIndex to make button show submenu when move mouse from another submenu
-//         sx={{ zIndex: theme.zIndex.modal + 1, color: "black" }}
-         
-//         ref={buttonRef}
-//         onClick={() => {
-//           if (!menuItem.subMenus) {
-//             console.log("first level menu click");
-//           }
-//         }}
-//         onMouseLeave={() => {
-
-
-//           setTimeout(() => {
-//             console.log('mouseleave')
-//           setMenuShowingDropdown("");
-//           }, 300);
-          
-//           //setMenuShowingDropdown("");
-//         }}
-//         onMouseEnter={() => {
-//           console.log('onMouseEnter')
-//           if (menuItem.subMenus) {
-//             showSubMenu();
-//             return;
-//           }
-//         }}
-//       >
-//         {title} {menuItem.subMenus ? "↓" : ""}
-//       </Button>
-//       <Menu
-//         PaperProps={{
-//           onMouseEnter: () => {
-//             showSubMenu();
-//           },
-//           onMouseLeave: () => {
-//             closeSubMenu();
-//           },
-//         }}
-//         anchorEl={buttonRef.current}
-//         open={menuShowingDropdown === menuItem.title}
-//         onClose={closeSubMenu}
-//       >
-//         {subMenusNodes}
-//       </Menu>
-//     </>
-//   );
-// };
-///////////////////////////
-
-
 ///main menu header
 
 const Header = () => {
+  //////
 
-//////
-// const [menuShowingDropdown, setMenuShowingDropdown] = useState("");
-
-// const handleMenuShowingDropdownChange = useCallback((menuTitle) => {
-//   console.log('212: ',menuTitle);
-//   setMenuShowingDropdown(menuTitle);
-// }, []);
-
-// const menuItems = MENU_ITEMS.map((menuItem) => {
-//   return (
-//     <DropdownMenuItem
-//       key={menuItem.title}
-//       menuItem={menuItem}
-//       menuShowingDropdown={menuShowingDropdown}
-//       setMenuShowingDropdown={handleMenuShowingDropdownChange}
-//     />
-//   );
-// });
-
-
-
-/////////
-
+  /////////
 
   const theme = useTheme();
   const navigate = useNavigate();
   //check if its small screen
   const isSmallScreen = useMediaQuery("(max-width:850px)");
-  // const [anchorEl, setAnchorEl] = React.useState(null);
-  // const open = Boolean(anchorEl);
-  // const handleClick = (event) => {
-  //   console.log(event.currentTarget);
-  //   if (anchorEl !== event.currentTarget) {
-  //     setAnchorEl(event.currentTarget);
-  //   }
-  //   console.log(`Mouse over item `);
-  // };
-  // const handleClose = () => {
-  //   setAnchorEl(null);
-  //   console.log("Mouse out");
-  // };
+
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -300,8 +102,6 @@ const Header = () => {
                 height="30"
               ></img>
             </Box>
-
-
 
             <IconButton
               color="inherit"
@@ -337,26 +137,27 @@ const Header = () => {
             </DrawerHeader>
             <Divider />
 
-
-
             <List>
               {LinkItems.map((item) => (
                 <ListItem key={item.name} disablePadding>
-                  <ListItemButton onClick = {()=>navigate(item.to)}>
- 
+                  <ListItemButton onClick={() => navigate(item.to)}>
                     <ListItemText primary={item.name} />
                   </ListItemButton>
                 </ListItem>
               ))}
             </List>
-         
+
             <Divider />
           </Drawer>
         </AppBar>
-      ) : (   //this is for bigger screen
+      ) : (
+        //this is for bigger screen
         <StyledAppbar className="header" container position="static">
-          <Toolbar  style={{'min-height':'24px'}}>  <MenuItemComponent /></Toolbar>
-        
+          <Toolbar style={{ minHeight: "24px" }}>
+            {" "}
+            <MenuItemComponent />
+          </Toolbar>
+
           {/* {LinkItems.map((label, index) => (
             <Grid sx={{ color: "white", m: 1 }} item key={index}>
               {label.type === "link" ? (

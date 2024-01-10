@@ -1,9 +1,9 @@
-import { useTheme } from "@emotion/react";
-import { Button, Icon, Menu, MenuItem } from "@mui/material";
-import React, { useCallback, useRef, useState } from "react";
+
+import { Button, Menu, MenuItem } from "@mui/material";
+import { useCallback, useRef, useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
+import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 export const MENU_ITEMS = [
   {
     title: "About",
@@ -76,25 +76,22 @@ const DropdownMenuItem = ({
 }) => {
   const { title, subMenus } = menuItem;
   const buttonRef = useRef(null);
-  const theme = useTheme();
   const navigate = useNavigate();
 
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
   const [isHover, setIsHover] = useState(false);
   useEffect(() => {
-    console.log("isSubmenuOpen,isHover", isSubmenuOpen, isHover);
+    //console.log("isSubmenuOpen,isHover", isSubmenuOpen, isHover);
     //setTimeout(() => {
-      if ((isHover || isSubmenuOpen) && subMenus) {
-        console.log( title, subMenus,"open");
-        showSubMenu();
-      } else {
-        console.log( title, subMenus,"close");
-        closeSubMenu();
-      }
+    if ((isHover || isSubmenuOpen) && subMenus) {
+      //console.log(title, subMenus, "open");
+      showSubMenu();
+    } else {
+      //console.log(title, subMenus, "close");
+      closeSubMenu();
+    }
     //}, 300);
   }, [isSubmenuOpen, isHover]);
-   useEffect(()=>{console.log('buttonRef',buttonRef.current)},buttonRef)
-  useEffect(()=>{console.log(menuItem);});
 
   const showSubMenu = useCallback(() => {
     setMenuShowingDropdown(title);
@@ -112,11 +109,9 @@ const DropdownMenuItem = ({
       }}
       key={subMenuItem.title}
       onMouseLeave={() => {
-        //console.log(subMenuItem,"leave");
         setIsSubmenuOpen(false);
       }}
       onMouseEnter={() => {
-        //console.log(subMenuItem,"enter");
         setIsSubmenuOpen(true);
       }}
       sx={{
@@ -147,8 +142,6 @@ const DropdownMenuItem = ({
             border: "none", // Remove border
             borderRadius: 0, // Remove border radius
           },
-          // "& .MuiPaper-root":{backgroundColor: "#00296b"},
-
           boxShadow: "none", // Remove shadow
           border: "none", // Remove border
           borderRadius: 0, // Remove border radius
@@ -167,20 +160,21 @@ const DropdownMenuItem = ({
           // setTimeout(() => {
           //   closeSubMenu();
           // }, 300);
+          console.log(title, " to out");
         }}
         onMouseEnter={() => {
-          console.log(title,' to enter');
+          console.log(title, " to enter");
           setIsHover(true);
           if (subMenus) {
             showSubMenu();
           }
         }}
-        className='coco22'
+        
       >
-        {title} {subMenus ?  <ExpandMoreRoundedIcon /> : ""}
+        {title} {subMenus ? <ExpandMoreRoundedIcon /> : ""}
       </Button>
       <Menu
-     sx={{"& .MuiPaper-root":{backgroundColor: "#00296b"},}}
+        sx={{ "& .MuiPaper-root": { backgroundColor: "#00296b" } }}
         anchorEl={buttonRef.current}
         open={menuShowingDropdown === title}
         onClose={closeSubMenu}
@@ -189,8 +183,6 @@ const DropdownMenuItem = ({
 
           showSubMenu();
         }}
-       
-        
       >
         {subMenusNodes}
       </Menu>
@@ -200,11 +192,9 @@ const DropdownMenuItem = ({
 
 const MenuItemComponent = () => {
   const [menuShowingDropdown, setMenuShowingDropdown] = useState("");
-
   const handleMenuShowingDropdownChange = useCallback((menuTitle) => {
     setMenuShowingDropdown(menuTitle);
   }, []);
-
   return (
     <>
       {MENU_ITEMS.map((menuItem) => (

@@ -22,6 +22,27 @@ const StyledAppbar = styled(Grid)(({ theme }) => ({
   },
 }));
 
+const CustomAppBar = styled(Box)(({ theme }) => ({
+  // backgroundColor: 'rgb(0, 41, 107)',
+  backgroundColor:"white",
+  color: theme.palette.common.white,
+  width: 'auto',
+  right: 100,
+  marginTop: 30,
+ 
+  position: "absolute",
+  flexDirection: "row",
+  padding:'4px 0px   ',
+
+  border: "2px solid white"  , // Add white border
+  // borderRadius: "30px", // Set the border radius for rounded edges
+
+  // // Responsive styles
+  [theme.breakpoints.down("sm")]: {
+    width: "100%", // Set width to 100% for small screens
+  },
+}));
+
 const StyledNavLink = styled(NavLink)(({ theme }) => ({
   textDecoration: "none",
   color: theme.palette.common.white /* Default color for the link */,
@@ -64,4 +85,4 @@ const  styledMenu = styled(Menu)(({theme})=>({
 
 }));
 
-export { StyledAppbar, StyledNavLink ,styledMenu };
+export { StyledAppbar, StyledNavLink ,styledMenu,CustomAppBar };

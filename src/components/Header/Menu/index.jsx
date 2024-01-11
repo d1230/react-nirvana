@@ -1,9 +1,15 @@
-
-import { Button, Menu, MenuItem } from "@mui/material";
-import { useCallback, useRef, useState } from "react";
-import { useEffect } from "react";
+import {
+  AppBar,
+  Button,
+  Menu,
+  MenuItem,
+  Toolbar,
+  useTheme,
+} from "@mui/material";
+import React, { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
+
 export const MENU_ITEMS = [
   {
     title: "About",
@@ -73,65 +79,72 @@ const DropdownMenuItem = ({
   menuItem,
   menuShowingDropdown,
   setMenuShowingDropdown,
+  index,
+  menuItemLength,
 }) => {
   const { title, subMenus } = menuItem;
   const buttonRef = useRef(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const theme = useTheme();
   const navigate = useNavigate();
 
-  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
-  const [isHover, setIsHover] = useState(false);
-  useEffect(() => {
-    //console.log("isSubmenuOpen,isHover", isSubmenuOpen, isHover);
-    //setTimeout(() => {
-    if ((isHover || isSubmenuOpen) && subMenus) {
-      //console.log(title, subMenus, "open");
-      showSubMenu();
-    } else {
-      //console.log(title, subMenus, "close");
-      closeSubMenu();
-    }
-    //}, 300);
-  }, [isSubmenuOpen, isHover]);
-
   const showSubMenu = useCallback(() => {
-    setMenuShowingDropdown(title);
-  }, [title, setMenuShowingDropdown]);
+    setMenuShowingDropdown(menuItem.title);
+  }, [menuItem.title, setMenuShowingDropdown]);
 
   const closeSubMenu = useCallback(() => {
     setMenuShowingDropdown("");
   }, [setMenuShowingDropdown]);
 
-  const subMenusNodes = subMenus?.map((subMenuItem) => (
-    <MenuItem
-      onClick={() => {
-        navigate(subMenuItem.pathname);
-        closeSubMenu(); // Close the submenu after clicking
-      }}
-      key={subMenuItem.title}
-      onMouseLeave={() => {
-        setIsSubmenuOpen(false);
-      }}
-      onMouseEnter={() => {
-        setIsSubmenuOpen(true);
-      }}
-      sx={{
-        color: "#ffffff",
-        backgroundColor: "#00296b",
-        "&:hover": {
-          backgroundColor: "#00296b", // Keep the same background color on hover
-          color: "grey",
-        },
-      }}
-    >
-      {subMenuItem.title}
-    </MenuItem>
-  ));
+  const getBorderCss = (index, length) => {
+    if (index === 0) {
+      return {
+        borderTopLeftRadius: "25px",
+        borderTop: "2px solid white",
+        borderBottom: "2px solid",
+        borderBottomLeftRadius: "25px",
+        borderLeft:"2px solid white",
+        "&:hover":{
+          borderTopLeftRadius: "25px",
+        borderTop: "2px solid white",
+        borderBottom: "2px solid",
+        borderBottomLeftRadius: "25px",
+        borderLeft:"2px solid white",
+        }
+      };
+    } else if (index === length - 1) {
+      return {
+        borderTopRightRadius: "25px",
+        borderTop: "2px solid white",
+        borderBottom: "2px solid",
+        borderBottomRightRadius: "25px",
+        borderRight:"2px solid white",
+        "&:hover":{
+          borderTopRightRadius: "25px",
+        borderTop: "2px solid white",
+        borderBottom: "2px solid",
+        borderBottomRightRadius: "25px",
+        borderRight:"2px solid white",
+        }
+      };
+    } else {
+      return {
+        borderTop: "2px solid white",
+        borderBottom: "2px solid",
+        "&:hover":{
+          borderTop: "2px solid white",
+        borderBottom: "2px solid",
+        }
+      };
+    }
+  };
 
   return (
-    <>
+    <span id={`menuItem-${title}`} key={`menuItem-${title}`}>
       <Button
         id={`menuItem-${title}`}
         key={`menuItem-${title}`}
+        // sx={{ zIndex: theme.zIndex.modal + 1, color: "black" }}
         sx={{
           color: "#ffffff",
           backgroundColor: "#00296b",
@@ -141,66 +154,87 @@ const DropdownMenuItem = ({
             boxShadow: "none", // Remove shadow
             border: "none", // Remove border
             borderRadius: 0, // Remove border radius
+           
           },
           boxShadow: "none", // Remove shadow
           border: "none", // Remove border
+          height: "100%",
           borderRadius: 0, // Remove border radius
-        }}
-        ref={buttonRef}
-        onClick={() => {
-          if (!subMenus) {
-            console.log("first level menu click");
-            navigate(menuItem.pathname);
-          } else {
-            // showSubMenu();
-          }
+          zIndex: theme.zIndex.modal + 1,
+          ...getBorderCss(index, menuItemLength),
         }}
         onMouseLeave={() => {
-          setIsHover(false);
-          // setTimeout(() => {
-          //   closeSubMenu();
-          // }, 300);
-          console.log(title, " to out");
+          console.log("mouse leave");
+          setMenuShowingDropdown("");
         }}
-        onMouseEnter={() => {
-          console.log(title, " to enter");
-          setIsHover(true);
-          if (subMenus) {
+        onMouseEnter={(e) => {
+          if (menuItem.subMenus) {
+            setAnchorEl(e.currentTarget);
             showSubMenu();
+            return;
           }
         }}
-        
       >
-        {title} {subMenus ? <ExpandMoreRoundedIcon /> : ""}
+        {title} {menuItem.subMenus ? <ExpandMoreRoundedIcon /> : ""}
       </Button>
       <Menu
         sx={{ "& .MuiPaper-root": { backgroundColor: "#00296b" } }}
-        anchorEl={buttonRef.current}
-        open={menuShowingDropdown === title}
-        onClose={closeSubMenu}
-        onMouseEnter={() => {
-          setIsSubmenuOpen(true);
-
-          showSubMenu();
+        id={`menuItem-${title}`}
+        key={`menuItem-${title}`}
+        MenuListProps={{
+          onMouseEnter: () => {
+            showSubMenu();
+          },
+          onMouseLeave: () => {
+            closeSubMenu();
+          },
         }}
+        anchorEl={anchorEl}
+        // anchorEl={buttonRef.current}
+        open={menuShowingDropdown === menuItem.title && anchorEl !== null}
+        // open={menuShowingDropdown === menuItem.title && Boolean(anchorEl)}
+        onClose={closeSubMenu}
       >
-        {subMenusNodes}
+        {subMenus?.map((subMenuItem) => (
+          <MenuItem
+            onClick={() => {
+              // closeSubMenu(); // Close the submenu after clicking
+              navigate(subMenuItem.pathname);
+            }}
+            // disableScrollLock={true}
+            key={subMenuItem.title}
+            sx={{
+              color: "#ffffff",
+              backgroundColor: "#00296b",
+              "&:hover": {
+                backgroundColor: "#00296b", // Keep the same background color on hover
+                color: "grey",
+              },
+            }}
+          >
+            {subMenuItem.title}
+          </MenuItem>
+        ))}
       </Menu>
-    </>
+    </span>
   );
 };
 
 const MenuItemComponent = () => {
   const [menuShowingDropdown, setMenuShowingDropdown] = useState("");
+
   const handleMenuShowingDropdownChange = useCallback((menuTitle) => {
     setMenuShowingDropdown(menuTitle);
   }, []);
+
   return (
     <>
-      {MENU_ITEMS.map((menuItem) => (
+      {MENU_ITEMS.map((menuItem, index) => (
         <DropdownMenuItem
           key={menuItem.title}
+          index={index}
           menuItem={menuItem}
+          menuItemLength={MENU_ITEMS?.length}
           menuShowingDropdown={menuShowingDropdown}
           setMenuShowingDropdown={handleMenuShowingDropdownChange}
           sx={{ color: "white" }}
@@ -211,3 +245,4 @@ const MenuItemComponent = () => {
 };
 
 export default MenuItemComponent;
+// export default {};

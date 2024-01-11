@@ -179,8 +179,9 @@ const DropdownMenuItem = ({
       </Button>
       <Menu
         sx={{ "& .MuiPaper-root": { backgroundColor: "#00296b" } }}
-        id={`menuItem-${title}`}
-        key={`menuItem-${title}`}
+        id={`menuItem-${title}-${index}`}
+        key={`menuItem-${title}-${index}`}
+        index={index}
         MenuListProps={{
           onMouseEnter: () => {
             showSubMenu();
@@ -231,7 +232,7 @@ const MenuItemComponent = () => {
     <>
       {MENU_ITEMS.map((menuItem, index) => (
         <DropdownMenuItem
-          key={menuItem.title}
+        key={`${menuItem.title}-${index}`}
           index={index}
           menuItem={menuItem}
           menuItemLength={MENU_ITEMS?.length}
